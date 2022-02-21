@@ -189,3 +189,21 @@ lxc start ignite
 lxc exec ignite /bin/sh
 id
 ```
+-------------------------------------------------------------------------------------------------
+## Scecific permission for specific user
+`no permission`
+```
+setfacl -m u:username:000 myfolder/myfile
+```
+`read-write-execute`
+```
+setfacl -m u:username:rwx myfolder/myfile
+```
+`readonly permission`
+```
+setfacl -m u:username:r myfolder/myfile
+```
+`read & write permission`
+```
+setfacl -m u:username:rw myfolder/myfile
+```
