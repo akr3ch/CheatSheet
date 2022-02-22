@@ -19,7 +19,10 @@ find / -perm -u=s -type f 2>/dev/null
 getcap -r / 2>/dev/null
 ```
 
-
+`find all hidden flag.txt and read it`
+```
+cat $(find / -name flag.txt 2>/dev/null)
+```
 
 
 
