@@ -1,3 +1,31 @@
+-----------------------------------------------------------------------------------------------------------
+## Useful find commands example
+
+
+`SUID`
+```
+find / -user root -perm /4000 2>/dev/null
+```
+```
+find / -user root -perm -4000 -exec ls -ldb {}; > /tmp/suid
+```
+```
+find / -type f -name '*.txt' 2>/dev/null
+```
+```
+find / -perm -u=s -type f 2>/dev/null
+```
+```
+getcap -r / 2>/dev/null
+```
+
+
+
+
+
+
+
+
 
 -------------------------------------------------------------------------------------------------------------
 ## Bypass File Upload Filtering
