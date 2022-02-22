@@ -183,6 +183,7 @@ lxc image list
 
 *run those commands on target machine*
 ```
+lxc init
 lxc init myimage ignite -c security.privileged=true
 lxc config device add ignite mydevice disk source=/ path=/mnt/root recursive=true
 lxc start ignite
