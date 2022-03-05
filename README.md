@@ -1,17 +1,12 @@
 ----------------------------------------------------------------------------------------------------------
-
-# Basic enumeration on linux and windows
-`Linux`--------------`Windows`-----------------Purpose of command
-
-`whoami`-------------`whoami`------------------Name of current user
-
-`uname -a`-----------`ver`---------------------Operating system
-
-`ifconfig`-----------`ipconfig /all`------Network configuration
-
-`netstat -an`-------`netstat -an`---------Network connections
-
-`ps -ef`---------------`tasklist`--------------Running processes
+## Basic enumeration on linux and windows
+| **Linux**  | **Windows** | **Purpose of command** |
+|------------|-------------|------------------------|
+|`whoami`|`whoami`|Name of current user
+| `uname -a`|`ver`|Operating system
+|`ifconfig`|`ipconfig /all`|Network configuration
+|`netstat -an`|`netstat -an`|Network connections
+|`ps -ef`|`tasklist`|Running processes
 
 -----------------------------------------------------------------------------------------------------------
 # Useful find commands example
