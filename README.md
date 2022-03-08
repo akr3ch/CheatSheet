@@ -5,8 +5,6 @@
 
 # It might need some time to complete
 
-* ![mysql](https://github.com/akr3ch/CS-AIO-CheatSheet/edit/main/README.md#mysql)
-
 ----------------------------------------------------------------------------------------------------------
 ## Basic enumeration on linux and windows
 | **Linux**  | **Windows** | **Purpose of command** |
