@@ -1,6 +1,9 @@
 
 # Adding new topics daily
-# It must need some time to complete
+<img alt="GIF" src="https://media1.giphy.com/media/Rm1p7xp3Odl2o/giphy.gif?raw=true" width="500" height="320" />
+
+
+# It may need some time to complete
 
 
 
