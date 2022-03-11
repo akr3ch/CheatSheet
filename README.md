@@ -454,6 +454,10 @@ nmap –p 445 --script smb-brute –script-args userdb=user-list.txt,passdb=pass
 
 ```python
 {{7*7}}
+${7*7}
+<%= 7*7 %>
+${{7*7}}
+#{7*7}
 ```
 * if the app reflects the output as `49`.Then there might be a RCE possible.
 * now encode the payload in basse64.
