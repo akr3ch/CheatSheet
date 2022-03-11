@@ -448,7 +448,7 @@ map - Brute Force Accounts (be aware of account lockout!)
 nmap –p 445 --script smb-brute –script-args userdb=user-list.txt,passdb=pass-list.txt target-IP
 ```
 
-## Python RCE
+## SSTI to RCE
 * At first check if the app is build in Python.
 * Try this, everywhere the app is taking input from the user.
 
