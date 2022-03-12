@@ -532,7 +532,7 @@ id
 # Perl setuid capability privesc
 
 * if the `perl` has the `cap_setuid+ep` permission set.
-* then it means `perl` has capability set permission.
+* then it means `perl` has capability of changing `UID`.
 ```shell
 akrech@akr3ch:/tmp$ getcap -r / 2>/dev/null
 /usr/bin/perl = cap_setuid+ep
