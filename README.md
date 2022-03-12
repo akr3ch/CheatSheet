@@ -69,8 +69,8 @@ mv evil.jpg evil.php.jpg
 ```
 ------------------------------------------------------------------------------------------------------------
 # Server Side Template Injection (SSTI) to RCE
-* At first check if the app is build in Python.
-* Try this, everywhere the app is taking input from the user.
+
+* Try this, everywhere the app is taking input from the user and reflecting the output.
 
 ```python
 {{7*7}}
