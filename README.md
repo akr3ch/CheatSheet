@@ -421,7 +421,7 @@ PD9waHAKJGRiX25hbWU9ImJpaHRhcHViX2RiIjsKaWYoJF9TRVJWRVJbIlNFUlZFUl9BRERSIl09PSIx
 ```
 
 *decode*
-```
+```php
 <?php
 $db_name="bihtapub_db";
 if($_SERVER["SERVER_ADDR"]=="127.0.0.1")
