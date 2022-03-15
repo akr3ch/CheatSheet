@@ -38,10 +38,10 @@
  - [Simple bash port scanner](#simple-bash-port-scanner)
  - [Python virtual environment](#python-virtual-environment)
  - [File permission](https://github.com/akr3ch/CS-AIO-CheatSheet/edit/main/README.md#scecific-permission-for-specific-user)
- - [SMB enumeration(port 445)](#smb-enumeration)
+ - [SMB enumeration](#smb-enumeration)
 ### Windows
 - [Basic enumeration](#basic-enumeration-on-linux-and-windows)
-- [Windows SMB enumeration](#windows-smb-enumeration)
+- [SMB enumeration](#windows-smb-enumeration)
 - [xfreerdp](#xfreerdp)
 
 ### Linux Privesc
