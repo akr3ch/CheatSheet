@@ -36,6 +36,7 @@
  - [Basic enumeration](#basic-enumeration-on-linux-and-windows)
  - [Useful find commands](#useful-find-commands-example)
  - [Simple bash port scanner](#simple-bash-port-scanner)
+ - [Python virtual environment](#python-virtual-environment)
  - [File permission](https://github.com/akr3ch/CS-AIO-CheatSheet/edit/main/README.md#scecific-permission-for-specific-user)
  - [SMB enumeration(port 445)](#smb-enumeration)
 ### Windows
@@ -647,6 +648,26 @@ cat $(find / -name flag.txt 2>/dev/null)
 ```shell
 for PORT in {0..1000}; do timeout 1 bash -c "</dev/tcp/127.0.0.1/$PORT &>/dev/null" 2>/dev/null && echo "port $PORT is open"; done
 ```
+ 
+ # Python virtual environment
+-------------------------------------------------------------------------------------------------
+`install`
+```
+ sudo apt install python3.9-venv
+```
+`active` 
+```
+python3 -m venv env
+```
+```
+┌──(kali㉿bughunt3r)-[~]
+└─$ source env/bin/activate
+                                                                                                                                                             
+┌──(env)─(kali㉿bughunt3r)-[~]
+└─$ 
+```
+ * notice that there is a variable added before the username & hostname.
+ * now we are inside of the Python virtual environment.
 -------------------------------------------------------------------------------------------------
 # Scecific permission for specific user
 `no permission`
