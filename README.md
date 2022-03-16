@@ -28,8 +28,8 @@
   - [Sever Side Request Forgery (SSRF)](#ssrf-common-payloads)
   - [Client Side Request Forgerty (CSRF)](#csrf-common-payloads)
   - [Carriage Return and Line Feed (CRLF)](#crlf-common-payloads)
-  - [Local File Inclution (LFI)](#local-file-inclusion-lfi-payloads)
-  - [Remote File Inclution (RFI)](#remote-file-inclusion-rfi)
+  - [Local File Inclusion (LFI)](#local-file-inclusion-lfi-payloads)
+  - [Remote File Inclusion (RFI)](#remote-file-inclusion-rfi)
   - [Structured Query Language Injection (SQLI)](#sql-injection-payload-list)
 
 ### Linux
