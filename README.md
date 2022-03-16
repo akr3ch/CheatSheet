@@ -63,7 +63,7 @@
   - [evil-winrm](#evil-winrm)
 
 ### Android
-- [ADB](#adb)
+- [ADB Basics](#adb-basics)
 
 ### Extra notes
   - [make NTML hash from password](#make-ntml-hash-from-password)
@@ -1151,29 +1151,127 @@ download remote_filename (destination_filename)
 --------------------------------------------------------------------------------------------------------
 # Android
 
-### ADB
 
-* Connect to the target with `IP` and `Port`
+## ADB Basics
 
-```
-adb connect <ip>:<port>
-```
-* Get a `shell` access on the device
-```
-adb shell
-```
-* Install `app` on the device
-```
-adb install pegasus.apk
-```
-* Set a `proxy` to intercept requests
-```
-adb shell settings put global http_proxy 10.10.14.16:8080
-```
-* Remove `proxy`
-```
-adb shell settings put global http_proxy :0
-```
+| COMMAND  | EXPLANATION |
+-----------|-------------
+| `adb devices` | lists connected devices
+| `adb root` | restarts adb with root permissions
+| `adb start-server` | starts the adb server
+| `adb kill-server` | kills the adb server
+| `adb reboot` | reboots the device
+| `adb devices -l` | list of devices by product/model
+| `adb shell` | starts the backround terminal
+| `exit` | exits the background terminal
+| `adb help` | list all commands
+| `adb -s <deviceName> <command>` | redirect command to specific device
+| `adb –d <command>` | directs command to only attached USB device
+| `adb –e <command>` | directs command to only attached emulator |
+
+
+ ### Package Installation
+  
+| COMMAND | EXPLANATION |
+|---------|--------------
+| `adb shell install <apk>` | install app
+| `adb shell install <path>` | install app from phone path
+| `adb shell install -r <path>` | install app from phone path
+| `adb shell uninstall <name>` | remove the app
+
+
+### File Operations
+
+| LOCATOR | EXPLANATION |
+|---------|-------------|
+| `adb push <local> <remote>` | copy file/dir to device
+| `adb pull <remote> <local>` | copy file/dir from device
+| `run-as <package> cat <file>` | access the private package file
+
+
+### Phone Info
+
+| COMMAND | EXPLANATION |
+|---------|--------------
+| `adb get-statе` | print device state
+| `adb get-serialno` | get the serial number
+| `adb shell dumpsys iphonesybinfo` | get the IMEI
+| `adb shell netstat` | list TCP connectivity
+| `adb shell pwd` | print current working directory
+| `adb shell dumpsys battery` | battery status
+| `adb shell pm list features` | list phone features
+| `adb shell service list` | list all services
+| `adb shell dumpsys activity <package>/<activity>` | activity info
+| `adb shell ps` | print process status
+| `adb shell wm size` | displays the current screen resolution
+
+  
+### Paths
+| COMMAND | EXPLANATION |
+|---------|--------------
+| `/data/data/<package>/databases` | app databases
+| `/data/data/<package>/shared_prefs/` | shared preferences
+| `/data/app` | apk installed by user
+| `/system/app` | pre-installed APK files
+| `/mmt/asec` | encrypted apps / App2SD
+| `/mmt/emmc` | internal SD Card
+| `/mmt/adcard` | external/Internal SD Card
+| `/mmt/adcard/external_sd` | external SD Card
+
+### Configure Settings Commands
+| COMMAND | EXPLANATION |
+|---------|-------------- 
+| `adb shell dumpsys battery set level <n>` | change the level from 0 to 100
+| `adb shell dumpsys battery set status <n>` | change the level to unknown,charging, discharging, not charging or full
+| `adb shell dumpsys battery reset` | reset the battery
+| `adb shell dumpsys battery set usb <n>` | change the status of USB connection ON or OFF
+| `adb shell wm size WxH` | sets the resolution to WxH
+  
+### Table
+| COMMAND | EXPLANATION |
+|---------|--------------
+| `adb shell list packages` | list package names
+| `adb shell list packages -r` | list package name + path to apks
+| `adb shell list packages -3` | list third party package names
+| `adb shell list packages -s` | list only system packages
+| `adb shell list packages -u` | list package names + uninstalled
+| `adb shell dumpsys package packages` | list info on all apps
+| `adb shell dump <name>` | list info on one package
+| `adb shell path <package>` | path to the apk file
+
+### Logs
+| COMMAND | EXPLANATION |
+|---------|--------------
+| `adb logcat [options] [filter]` | view device log
+| `adb bugreport` | print bug reports
+
+
+### Permissions
+| COMMAND | EXPLANATION|
+|---------|-------------
+| `adb shell permissions groups` | list permission groups definitions
+| `adb shell list permissions -g -r` | list permissions details
+
+### Device Related Commands
+| COMMAND | EXPLANATION |
+|---------|--------------|
+| `adb reboot-recovery` | reboot device into recovery mode
+| `adb reboot fastboot` | reboot device into recovery mode
+| `adb shell screencap -p "/path/to/screenshot.png"` | capture screenshot
+| `adb shell screenrecord "/path/to/record.mp4"` | record device screen
+| `adb backup -apk -all -f backup.ab` | backup settings and apps
+| `adb backup -apk -shared -all -f backup.ab` | backup settings, apps and shared storage
+| `adb backup -apk -nosystem -all -f backup.ab` | backup only non-system apps
+| `adb restore backup.ab` | restore a previous backup
+| `adb shell am start -a android.intent.action.VIEW -d URL` | open URL
+| `adb shell am start -t image/* -a android.intent.action.VIEW` | opens gallery
+
+### Network
+  
+  | COMMAND | EXPLANATION |
+  |---------|--------------|
+  | `adb shell settings put global http_proxy 10.10.14.16:8080` |  Set a `proxy` to intercept requests |
+  | `adb shell settings put global http_proxy :0` |  Remove `proxy`
 ---------------------------------------------------------------------------------------------------------
 # Extra notes
 
