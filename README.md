@@ -23,7 +23,7 @@
   - [Open redirect](#open-web-redirect)
   - [PHP filter](#php-filters-for-lfi)
   - [Cross Side Scripting (XSS)](#xss-common-payloads)
-  - [XML External Entry (XXE)](#xxe-common-payloads)
+  - [XML External Entity (XXE)](#xxe-common-payloads)
   - [Server Side Template Injection (SSTI)](#server-side-template-injection-ssti)
   - [Sever Side Request Forgery (SSRF)](#ssrf-common-payloads)
   - [Client Side Request Forgerty (CSRF)](#csrf-common-payloads)
