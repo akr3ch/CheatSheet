@@ -1186,7 +1186,7 @@ python -c 'import hashlib,binascii; print binascii.hexlify(hashlib.new("md4", "<
 ### snap
 
 ```
-sudo apt install snap
+sudo apt install snapd
 ```
 ```
 service snapd start
