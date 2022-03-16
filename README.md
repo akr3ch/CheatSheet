@@ -12,6 +12,7 @@
       - [Windows 🪟](#windows)
       - [Linux privesc 🐧](#linux-privesc)
       - [Windows privesc 😃](#windows-privesc)
+      - [Android](#android)
       - [Extra notes 🗒](#extra-notes)
 
 
@@ -61,6 +62,8 @@
     - [smbclient](#smbclient)
   - [evil-winrm](#evil-winrm)
 
+### Android
+- [ADB](#adb)
 
 ### Extra notes
   - [make NTML hash from password](#make-ntml-hash-from-password)
@@ -1145,8 +1148,32 @@ upload local_filename (destination_filename)
 ```
 download remote_filename (destination_filename)
 ```
+--------------------------------------------------------------------------------------------------------
+# Android
 
+### ADB
 
+* Connect to the target with `IP` and `Port`
+
+```
+adb connect <ip>:<port>
+```
+* Get a `shell` access on the device
+```
+adb shell
+```
+* Install `app` on the device
+```
+adb install pegasus.apk
+```
+* Set a `proxy` to intercept requests
+```
+adb shell settings put global http_proxy 10.10.14.16:8080
+```
+* Remove `proxy`
+```
+adb shell settings put global http_proxy :0
+```
 ---------------------------------------------------------------------------------------------------------
 # Extra notes
 
