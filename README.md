@@ -40,6 +40,7 @@
 ### Linux
  - [Basic enumeration](#basic-enumeration-on-linux-and-windows)
  - [Useful find commands](#useful-find-commands-example)
+ - [Keyboard shortcuts for terminal](#keyboard-shortcuts)
  - [Simple bash port scanner](#simple-bash-port-scanner)
  - [Python virtual environment](#python-virtual-environment)
  - [File permission](https://github.com/akr3ch/CS-AIO-CheatSheet/edit/main/README.md#scecific-permission-for-specific-user)
@@ -739,6 +740,30 @@ getcap -r / 2>/dev/null
 ```
 cat $(find / -name flag.txt 2>/dev/null)
 ```
+# Keyboard shortcuts
+
+
+| Keyboard Shortcut |	Use of the keyboard shortcut |
+|-------------------|-------------------------------
+| `Ctrl-Alt-t` |	Open a new Terminal
+| `Ctrl-d` |	Close a terminal
+|`Ctrl-c` |	Cancels the currently running command.
+| `Ctrl-l` |	Clears the screen just like clear command
+| `Ctrl-a` | Move the cursor to the beginning of the line
+| `Ctrl-e` |	Move the cursor to the end of the line
+| `Ctrl-f` |	Move the cursor forward by one character
+| `Ctrl-b` |	Move the cursor backward by one character
+| `Alt-f` | Move the cursor forward by one word
+| `Alt-b` | 	Move the cursor backward by one word
+| `Ctrl-d`	| Delete the character at the cursor location
+| `Ctrl-t` | Exchange the character at the current location with the character at preceding it
+| `Ctrl-u` | Erases the complete line
+| `Alt-t` |	Exchange the word at the current location with the word at preceding it
+| `Alt-l` |	Move the cursor backward by one character
+| `Alt-u` |	Convert the characters of a word to lowercase from the current cursor location
+| `Alt-b` |	Convert the characters of a word to uppercase from the current cursor location
+
+
 # Simple bash port scanner
 
 ```shell
