@@ -739,6 +739,7 @@ xfreerdp /u:user /d:domain /p:password /v:10.5.23.42
 #### 7z exit codes
 
 | code | value |
+|-------|--------|
 | `0`   |    normal (no errors or warnings)
 | `1`   |    warning (non-fatal errors)
 | `2`   |    fatal error
