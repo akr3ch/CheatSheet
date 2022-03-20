@@ -1,5 +1,5 @@
 
-# Adding new topics daily
+# Adding new topics daily & please feel free to let me know if there any wrong info is given in the CheatSheet
 <img alt="GIF" src="https://media1.giphy.com/media/Rm1p7xp3Odl2o/giphy.gif?raw=true" width="500" height="320" />
 
 
@@ -7,12 +7,12 @@
 
 ### Contents:
   - [Categories](#contents)
-      - [Bug Bounty 🤖](#bugbounty)
-      - [Linux 👨🏽‍💻](#linux)
+      - [Bug Bounty 👨🏽‍💻](#bugbounty)
+      - [Linux 🐧](#linux)
       - [Windows 🪟](#windows)
-      - [Linux privesc 🐧](#linux-privesc)
+      - [Linux privesc 🤖](#linux-privesc)
       - [Windows privesc 😃](#windows-privesc)
-      - [Android](#android)
+      - [Android 📱](#android)
       - [Extra notes 🗒](#extra-notes)
 
 
@@ -39,12 +39,13 @@
 
 ### Linux
  - [Basic enumeration](#basic-enumeration-on-linux-and-windows)
+ - [cURL Cheat Sheet](#curl-cheat-sheet)
  - [ZIP all in one](#zip-all-in-one)
  - [Useful find commands](#useful-find-commands-example)
  - [Keyboard shortcuts for terminal](#keyboard-shortcuts)
  - [Simple bash port scanner](#simple-bash-port-scanner)
  - [Python virtual environment](#python-virtual-environment)
- - [File permission](#scecific-permission-for-specific-user)
+ - [Specific user file permission](#scecific-permission-for-specific-user)
  - [SMB enumeration](#smb-enumeration)
 ### Windows
 - [Basic enumeration](#basic-enumeration-on-linux-and-windows)
@@ -722,6 +723,44 @@ xfreerdp /u:user /d:domain /pth:011AD41795657A8ED80AB3FF6F078D03 /v:10.5.23.42
 ```
 xfreerdp /u:user /d:domain /p:password /v:10.5.23.42
 ```
+-----------------------------------------------------------------------------------------------------------
+# cURL Cheat Sheet
+
+| **Command** | **Description** |
+| --------------|-------------------|
+| `curl -h` | cURL help menu |
+| `curl inlanefreight.com` | Basic GET request |
+| `curl -s -O inlanefreight.com/index.html` | Download file |
+| `curl -k https://inlanefreight.com` | Skip HTTPS (SSL) certificate validation |
+| `curl inlanefreight.com -v` | Print full HTTP request/response details |
+| `curl -I https://www.inlanefreight.com` | Send HEAD request (only prints response headers) |
+| `curl -i https://www.inlanefreight.com` | Print response headers and response body |
+| `curl https://www.inlanefreight.com -A 'Mozilla/5.0'` | Set User-Agent header |
+| `curl -u admin:admin http://<SERVER_IP>:<PORT>/` | Set HTTP basic authorization credentials |
+| `curl  http://admin:admin@<SERVER_IP>:<PORT>/` | Pass HTT basic authorization credentials in the URL |
+| `curl -H 'Authorization: Basic YWRtaW46YWRtaW4=' http://<SERVER_IP>:<PORT>/` | Set request header |
+| `curl 'http://<SERVER_IP>:<PORT>/search.php?search=le'` | Pass GET parameters |
+| `curl -X POST -d 'username=admin&password=admin' http://<SERVER_IP>:<PORT>/` | Send POST request with POST data |
+| `curl -b 'PHPSESSID=c1nsa6op7vtk7kdis7bcnbadf1' http://<SERVER_IP>:<PORT>/` | Set request cookies |
+| `curl -X POST -d '{"search":"london"}' -H 'Content-Type: application/json' http://<SERVER_IP>:<PORT>/search.php` | Send POST request with JSON data |
+
+## APIs
+| **Command** | **Description** |
+| --------------|-------------------|
+| `curl http://<SERVER_IP>:<PORT>/api.php/city/london` | Read entry |
+| `curl -s http://<SERVER_IP>:<PORT>/api.php/city/ \| jq` | Read all entries |
+| `curl -X POST http://<SERVER_IP>:<PORT>/api.php/city/ -d '{"city_name":"HTB_City", "country_name":"HTB"}' -H 'Content-Type: application/json'` | Create (add) entry |
+| `curl -X PUT http://<SERVER_IP>:<PORT>/api.php/city/london -d '{"city_name":"New_HTB_City", "country_name":"HTB"}' -H 'Content-Type: application/json'` | Update (modify) entry |
+| `curl -X DELETE http://<SERVER_IP>:<PORT>/api.php/city/New_HTB_City` | Delete entry |
+
+## Browser DevTools
+
+| **Shortcut** | **Description** |
+| --------------|-------------------|
+| [`CTRL+SHIFT+I`] or [`F12`] | Show devtools |
+| [`CTRL+SHIFT+E`] | Show Network tab |
+| [`CTRL+SHIFT+K`] | Show Console tab |
+
 -----------------------------------------------------------------------------------------------------------
 # ZIP all in one
 ### 7z
