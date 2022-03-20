@@ -39,6 +39,7 @@
 
 ### Linux
  - [Basic enumeration](#basic-enumeration-on-linux-and-windows)
+ - [ZIP all in one](#zip-all-in-one)
  - [Useful find commands](#useful-find-commands-example)
  - [Keyboard shortcuts for terminal](#keyboard-shortcuts)
  - [Simple bash port scanner](#simple-bash-port-scanner)
@@ -721,6 +722,40 @@ xfreerdp /u:user /d:domain /pth:011AD41795657A8ED80AB3FF6F078D03 /v:10.5.23.42
 ```
 xfreerdp /u:user /d:domain /p:password /v:10.5.23.42
 ```
+-----------------------------------------------------------------------------------------------------------
+# ZIP all in one
+### 7z
+
+|  args | value |
+|-------|-------|
+| `a`   |   add
+| `d`   |   delete
+| `e`   |   extract
+| `l`   |   list
+| `t`   |   test
+| `u`   |   update
+| `x`   |   extract with full paths
+
+#### 7z exit codes
+
+| code | value |
+| `0`   |    normal (no errors or warnings)
+| `1`   |    warning (non-fatal errors)
+| `2`   |    fatal error
+| `7`   |    bad cli arguments
+| `8`   |    not enough memory for operation
+| `255` |    process was interrupted
+
+| `command` | `what does` |
+------------|--------------|
+| `tar cf - directory  7z a -si directory.tar.7z` | to backup a directory 
+| `7z -l examle.zip` | list the contents of an archive file
+| `7z l -slt examle.zip` | list files with full info
+| `7z a -tzip/gzip/bzip2/tar archived.zip path/to/file_or_directory` | archive using a specific archive type
+| `7z x archived.zip -so` | extract an archive to stdout
+| `7z x archived.zip -opath/to/output` | extract an archive with user-defined output path
+| `7z a encrypted.zip -ppassword -mhe=on archived.zip` | encrypt an existing archive (including headers)
+
 -----------------------------------------------------------------------------------------------------------
 # Useful find commands example
 
