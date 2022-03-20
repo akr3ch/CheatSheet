@@ -35,7 +35,7 @@
   - [Carriage Return and Line Feed (CRLF)](#crlf-common-payloads)
   - [Local File Inclusion (LFI)](#local-file-inclusion-lfi-payloads)
   - [Remote File Inclusion (RFI)](#remote-file-inclusion-rfi)
-  - [Structured Query Language Injection (SQLI)](#sql-injection-payload-list)
+  - [Structured Query Language injection (SQLi)](#sql-injection-payload-list)
 
 ### Linux
  - [Basic enumeration](#basic-enumeration-on-linux-and-windows)
