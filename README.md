@@ -45,7 +45,7 @@
  - [Keyboard shortcuts for terminal](#keyboard-shortcuts)
  - [Simple bash port scanner](#simple-bash-port-scanner)
  - [Python virtual environment](#python-virtual-environment)
- - [Specific user file permission](#scecific-permission-for-specific-user)
+ - [Specific user file permission](#specific-permission-for-specific-user)
  - [SMB enumeration](#smb-enumeration)
 ### Windows
 - [Basic enumeration](#basic-enumeration-on-linux-and-windows)
