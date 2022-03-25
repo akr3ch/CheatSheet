@@ -77,6 +77,7 @@
 ### Extra notes
   - [make NTML hash from password](#make-ntml-hash-from-password)
   - [snap](#snap)
+  - [SMTP](#smtp)
 -------------------------------------------------------------------------------------------------------------
 # Basic Enumeration
 
@@ -1484,5 +1485,12 @@ service snapd start
 ```
 ```
 sudo systemctl start snapd.service
+```
+
+### SMTP
+
+* install `smtp` mail reader
+```
+sudo apt install evolution
 ```
 ----------------------------------------------------------------------------------------------------------
