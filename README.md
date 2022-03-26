@@ -47,7 +47,7 @@
  - [Python virtual environment](#python-virtual-environment)
  - [Specific user file permission](#specific-permission-for-specific-user)
  - [SMB enumeration](#smb-enumeration)
- - [Redis RCE](#redis)
+ - [Redis RCE](#redis-rce)
 ### Windows
 - [Basic enumeration](#basic-enumeration-on-linux-and-windows)
 - [SMB enumeration](#windows-smb-enumeration)
