@@ -665,6 +665,8 @@ You can also try to use those insted of `/etc/passwd`
 /proc/version
 /proc/cmdline
 /var/log/apache2/access.log
+/etc/apache2/sites-enabled/000-default.conf
+/etc/apache2/sites-enabled/<site-from-000-df-comment>
 ```
 
 # LFI examples
