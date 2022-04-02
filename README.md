@@ -667,6 +667,7 @@ You can also try to use those insted of `/etc/passwd`
 /var/log/apache2/access.log
 /etc/apache2/sites-enabled/000-default.conf
 /etc/apache2/sites-enabled/<site-from-000-df-comment>
+/var/www/wordpress/wp-config.php
 ```
 
 # LFI examples
