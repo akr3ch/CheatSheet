@@ -25,7 +25,7 @@
       		- [ffuf](#ffuf)
    - [Bypass technics](#bypass-technics)
      - [Bypass file upload filtering](#bypass-file-upload-filtering)
-     - [Bypass 401/403](#401403-bypass)
+     - [Bypass 401/403](#bypass-401403)
      - [Bypass password reset](#bypass-password-reset)
   - [Open redirect](#open-web-redirect)
   - [PHP filter](#php-filters-for-lfi)
@@ -181,13 +181,17 @@ GET / + Referer : https://site.com/api/GetUser --> 200
 or
 GET /api/getUser + Referer : https://site.com/api/GetUser --> 200
 ```
+<img src="/assets/img/401-403-bypass.jpeg?raw=true"/>
+<img src="/assets/img/401-403-bypass1.jpeg?raw=true"/>
+<img src="/assets/img/401-403-bypass-payload.jpeg?raw=true"/>
+
 ### Bypass password reset
 1. Include controlled mail as a second parameter
 2. Bruteforce reset token
 3. Try to use a reset token on another account
 4. Try to figure out how token are generated
 
-<img src="/assets/img/password-reset-bypass?raw=true" width="500" height="320" />
+<img src="/assets/img/password-reset.jpeg?raw=true"/>
 
 -------------------------------------------------------------------------------------------------------------
 # Open web redirect
