@@ -554,6 +554,7 @@ ${product.getClass().getProtectionDomain().getCodeSource().getLocation().toURI()
 {{ . }}
 {{.Email}}
 {{.Password}}
+{{ .DebugCmd "id" }}
 ```
 ### `Twig (PHP)`
 ```
