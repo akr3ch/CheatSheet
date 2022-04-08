@@ -881,6 +881,7 @@ You can also try to use those insted of `/etc/passwd`
 /etc/apache2/sites-enabled/<site-from-000-df-comment>
 /var/www/wordpress/wp-config.php
 /etc/nginx/nginx.conf
+/etc/nginx/sites-enabled
 ```
 
 # LFI examples
