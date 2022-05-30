@@ -1086,6 +1086,35 @@ while stop == False:
 
 
 # Insecure deserialization
+
+
+## PHP serialization format
+
+PHP uses a mostly human-readable string format, with letters representing the data type and numbers representing the length of each entry. For example, consider a User object with the attributes:
+
+```php
+$user->name = "carlos";
+$user->isLoggedIn = true;
+```
+When serialized, this object may look something like this:
+`O:4:"User":2:{s:4:"name":s:6:"carlos"; s:10:"isLoggedIn":b:1;}`
+
+This can be interpreted as follows:
+
+    O:4:"User" - An object with the 4-character class name "User"
+    2 - the object has 2 attributes
+    s:4:"name" - The key of the first attribute is the 4-character string "name"
+    s:6:"carlos" - The value of the first attribute is the 6-character string "carlos"
+    s:10:"isLoggedIn" - The key of the second attribute is the 10-character string "isLoggedIn"
+    b:1 - The value of the second attribute is the boolean value true
+
+## Java serialization format
+
+Some languages, such as Java, use binary serialization formats. This is more difficult to read, but you can still identify serialized data if you know how to recognize a few tell-tale signs. For example, serialized Java objects always begin with the same bytes, which are encoded as ac ed in hexadecimal and rO0 in Base64.
+
+Any class that implements the interface java.io.Serializable can be serialized and deserialized. If you have source code access, take note of any code that uses the readObject() method, which is used to read and deserialize data from an InputStream. 
+
+
 ### Node.js deserialization vulnerability payload [RCE]
 
 ```js
