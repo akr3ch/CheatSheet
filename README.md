@@ -30,6 +30,7 @@
   - [Bypass technics](#bypass-technics)
      - [Bypass file upload filtering](#bypass-file-upload-filtering)
      - [Bypass 401/403](#bypass-401403)
+     - [Bypass 429](#bypass-429)
      - [Bypass password reset](#bypass-password-reset)
   - [PHP filters](#php-filters)
   - [Open redirect](#open-web-redirect)
@@ -265,6 +266,18 @@ GET /api/getUser + Referer : https://site.com/api/GetUser --> 200
 <img src="/assets/img/401-403-bypass.jpeg?raw=true"/>
 <img src="/assets/img/401-403-bypass1.jpeg?raw=true"/>
 <img src="/assets/img/401-403-bypass-payload.jpeg?raw=true"/>
+
+### Bypass 429
+#### Rate Limiting Bypass : `429 Too many Requests`
+
+#### Append the headers to a request where the server is responding with `429`
+
+```http
+Client-Ip: [random-ip] -> 200
+X-Client-Ip: [random-ip] -> 200
+X-Forwarded-For: [random-ip] -> 200
+X-Forwarded-For: 127.0.0.1
+```
 
 ### Bypass password reset
 1. Include controlled mail as a second parameter
@@ -577,7 +590,7 @@ Data:
 ## SSTI CheatSheet
 ### `Polyglot`
 ```
-${{<%[%'"}}%\.
+${{<%[%'"}}%\
 ```
 
 ### `FreeMarker (Java)`
