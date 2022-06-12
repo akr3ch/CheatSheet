@@ -308,7 +308,8 @@ X-Forwarded-For: 127.0.0.1 -> 200
 3. Try to use a reset token on another account
 4. Try to figure out how token are generated
 
-<img src="/assets/img/password-reset.jpeg?raw=true"/ width="500" height="600">
+
+<img src="/assets/img/password-reset.jpeg?raw=true" width="500" height="600"/>
 
 -------------------------------------------------------------------------------------------------------------
 # PHP filters
