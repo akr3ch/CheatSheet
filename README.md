@@ -290,6 +290,9 @@ Cluster-Client-IP: 127.0.0.1
 True-Client-IP: 127.0.0.1
 ```
 
+`curl -H "Content-Length:0" -X POST https://example.com`
+
+
 ### Bypass 429
 #### Rate Limiting Bypass : `429 Too many Requests`
 
