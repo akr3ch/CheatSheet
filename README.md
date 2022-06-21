@@ -115,10 +115,6 @@ ${${::-j}${::-n}${::-d}${::-i}:${::-l}${::-d}${::-a}${::-p}://somesitehackerofhe
 ```
 
 
-
-
-
-
 # One liner BugBounty
 
 ### XSS finder
@@ -199,6 +195,11 @@ gobuster dns -d erev0s.com -w awesome_wordlist.txt -i
  `vhost`
 ```
 gobuster vhost -u erev0s.com -w awesome_wordlist.txt -v
+```
+
+# DNS enumeration
+```
+amass -active -brute -o hosts.txt -d yahoo.com
 ```
 ----------------------------------------------------------------------------------------------------------------
 # Brute Force
