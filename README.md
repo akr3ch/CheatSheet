@@ -96,8 +96,8 @@
   - [SQLi+XSS+SSTI](#sqli-xss-ssti)
   - [ShellShock](#shellshock)
   - [grep](#grep)
-    - [emails](#email)
-    - [urls](#url)
+    - [emails](#emails)
+    - [urls](#urls)
 -------------------------------------------------------------------------------------------------------------
 # Payloads
 ## Log4j
