@@ -268,6 +268,10 @@ data:text/html;alert(1)/*,<svg%20onload=eval(unescape(location))><title>*/;alert
 
 # Cookie hacking
 
+### JWT follow the following pattern:
+```java
+Base64(Header).Base64(Data).Base64(Signature)
+```
 ### JWT secret bruteforce (crack)
 #### `hashcat`
 ```bash
