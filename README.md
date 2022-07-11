@@ -98,6 +98,7 @@
   - [grep](#grep)
     - [emails](#emails)
     - [urls](#urls)
+  - [Password-List](#password-list) 
 -------------------------------------------------------------------------------------------------------------
 # Payloads
 ## Log4j
@@ -2148,6 +2149,13 @@ grep -Eiorh '([[:alnum:]_.-]+@[[:alnum:]_.-]+?\.[[:alpha:].]{2,6})' "$@" file.tx
 #### urls
 ```
 cat file.txt | grep -Eo "(http|https)://[a-zA-Z0-9./?=_%:-]*" | sort -u
+```
+
+### Password List
+ 
+#### Convert each password to base64
+```
+while read line; do echo -n -i $line | base64 >> base64-passwords.txt; done < passwords.txt
 ```
 ----------------------------------------------------------------------------------------------------------
 
