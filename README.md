@@ -1,5 +1,6 @@
 
 ># just a part of my private notes - public
+This repo is no more maintained by myself 😕
 <img alt="GIF" src="https://media1.giphy.com/media/Rm1p7xp3Odl2o/giphy.gif?raw=true" width="500" height="320" />
 
 `<img src=x onerror=alert('I hope you will find something helpful here :)')>`
