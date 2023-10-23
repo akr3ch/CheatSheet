@@ -2087,10 +2087,10 @@ download remote_filename (destination_filename)
   
 | COMMAND | EXPLANATION |
 |---------|--------------
-| `adb shell install <apk>` | install app
-| `adb shell install <path>` | install app from phone path
-| `adb shell install -r <path>` | install app from phone path
-| `adb shell uninstall <name>` | remove the app
+| `adb install <apk>` | install app
+| `adb install <path>` | install app from phone path
+| `adb install -r <path>` | install app from phone path
+| `adb uninstall <name>` | remove the app
 
 
 ### File Operations
